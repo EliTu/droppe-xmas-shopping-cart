@@ -1,13 +1,19 @@
-import Styled from "./Layout.styled";
-import { ReactNode } from "react";
+import { ReactNode } from 'react';
+import Header from './Header/Header';
+import { MainAppLayout } from './Layout.styled';
 
 interface MainLayoutProps {
-  children: ReactNode;
+	children: ReactNode;
 }
 
 function MainLayout({ children }: MainLayoutProps) {
-  console.log("woo");
-  return <Styled.MainAppLayout>{children}</Styled.MainAppLayout>;
+	console.log('woo');
+	return (
+		<MainAppLayout>
+			<Header />
+			{children}
+		</MainAppLayout>
+	);
 }
 
 export default MainLayout;

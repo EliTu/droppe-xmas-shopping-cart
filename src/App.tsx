@@ -1,12 +1,13 @@
-import { useState } from "react";
-import MainLayout from "./components/Layout/MainLayout";
+import MainLayout from './components/Layout/MainLayout';
+import GlobalStyles from './GlobalStyles.styled';
 
 function App() {
-  return (
-    <MainLayout>
-      <div>WOOOO</div>
-    </MainLayout>
-  );
+	return (
+		<>
+			<GlobalStyles />
+			<MainLayout>Some content</MainLayout>
+		</>
+	);
 }
 
 export default App;

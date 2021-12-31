@@ -1,0 +1,30 @@
+import styled from 'styled-components';
+import { FlexRowDiv } from '../../../GlobalStyles.styled';
+
+const HeaderContainer = styled.header`
+	height: 4rem;
+	display: flex;
+	background-color: dodgerblue;
+	padding: 0 2rem;
+	user-select: none;
+`;
+
+const TitleContainer = styled(FlexRowDiv)`
+	align-items: center;
+
+	&::after {
+		content: '';
+		height: 70%;
+		border: 2px solid black;
+		background: black;
+		opacity: 0.7;
+		margin-inline-start: 0.8rem;
+	}
+`;
+
+const MainTitle = styled.h1`
+	font-size: 24px;
+	color: #100e0ec2;
+`;
+
+export { HeaderContainer, TitleContainer, MainTitle };
