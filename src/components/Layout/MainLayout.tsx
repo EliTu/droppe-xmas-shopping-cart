@@ -1,6 +1,7 @@
 import { ReactNode } from 'react';
+import Footer from './Footer/Footer';
 import Header from './Header/Header';
-import { MainAppLayout } from './Layout.styled';
+import { ContentContainer, MainAppLayout } from './Layout.styled';
 
 interface MainLayoutProps {
 	children: ReactNode;
@@ -11,7 +12,8 @@ function MainLayout({ children }: MainLayoutProps) {
 	return (
 		<MainAppLayout>
 			<Header />
-			{children}
+			<ContentContainer>{children}</ContentContainer>
+			<Footer />
 		</MainAppLayout>
 	);
 }
