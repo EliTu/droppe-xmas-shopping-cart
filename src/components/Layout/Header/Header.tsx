@@ -1,7 +1,7 @@
 import { HeaderContainer, MainTitle, TitleContainer } from './Header.styled';
 
 function Header() {
-	const title = 'Droppe XMAS App';
+	const title = 'Droppe XMAS';
 	return (
 		<HeaderContainer>
 			<TitleContainer>

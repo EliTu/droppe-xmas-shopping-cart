@@ -5,6 +5,7 @@ const HeaderContainer = styled.header`
 	height: 4rem;
 	display: flex;
 	background-color: dodgerblue;
+	box-shadow: 0 0 5px black;
 	padding: 0 2rem;
 	user-select: none;
 `;
