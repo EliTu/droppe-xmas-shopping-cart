@@ -28,11 +28,10 @@ export interface Cart {
 	products: UnpopulatedProduct[];
 }
 
-interface SerializedError {
-	name?: string;
-	message?: string;
-	code?: string;
-	stack?: string;
+export enum Status {
+	IDLE = 'idle',
+	LOADING = 'loading',
+	ERROR = 'error',
 }
 
 export interface ShopInitialState {
@@ -41,6 +40,6 @@ export interface ShopInitialState {
 	products: Product[];
 	acceptedCarts: Cart[];
 	disregardedCarts: Cart[];
-	isLoading: boolean;
-	error: SerializedError | null;
+	status: Status;
+	errorMessage: string | undefined;
 }

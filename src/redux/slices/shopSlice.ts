@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { ShopInitialState, WishListUser } from './types';
+import { ShopInitialState, Status, WishListUser } from './types';
 import { getCartsAsync } from './thunks';
 
 const WISH_LIST_USERS: ReadonlyArray<WishListUser> = [
@@ -31,8 +31,8 @@ const initialState: ShopInitialState = {
 	acceptedCarts: [],
 	disregardedCarts: [],
 	products: [],
-	isLoading: false,
-	error: null,
+	status: Status.IDLE,
+	errorMessage: undefined,
 };
 
 export const shopSlice = createSlice({
@@ -41,10 +41,21 @@ export const shopSlice = createSlice({
 	reducers: {},
 	extraReducers: ({ addCase }) => {
 		addCase(getCartsAsync.pending, state => {
-			return { ...state, isLoading: true };
+			return { ...state, status: Status.LOADING };
 		});
-		addCase(getCartsAsync.fulfilled, (state, action) => {
-			return { ...state, isLoading: false };
+		addCase(getCartsAsync.fulfilled, (state, { payload }) => {
+			return {
+				...state,
+				status: Status.IDLE,
+				carts: payload ?? [],
+			};
+		});
+		addCase(getCartsAsync.rejected, (state, { payload }) => {
+			return {
+				...state,
+				status: Status.ERROR,
+				errorMessage: (payload as Error)?.message,
+			};
 		});
 	},
 });

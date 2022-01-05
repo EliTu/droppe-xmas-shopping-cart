@@ -6,11 +6,21 @@ const BASE_URL = 'https://fakestoreapi.com';
 
 export const getCartsAsync = createAsyncThunk(
 	'getAllCartsByUserCartId',
-	async (userCartIds: number[]) => {
-		const getCartPromises = userCartIds.map(cartId =>
-			axios.get<Cart>(`${BASE_URL}/carts/${cartId}`)
-		);
-		const res = await Promise.all(getCartPromises);
-		console.log(res);
+	async (userCartIds: number[], { rejectWithValue }) => {
+		try {
+			const getCartPromises = userCartIds.map(cartId =>
+				axios.get<Cart>(`${BASE_URL}/carts/${cartId}`)
+			);
+
+			const productsData = (await Promise.all(getCartPromises)).map(
+				promiseRes => promiseRes.data
+			);
+
+			if (productsData.length) return productsData;
+		} catch (error) {
+			if (error instanceof Error) {
+				return rejectWithValue(error.message);
+			}
+		}
 	}
 );
