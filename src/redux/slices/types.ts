@@ -3,12 +3,12 @@ export interface WishListUser {
 	associatedCartId: number;
 }
 
-interface UnpopulatedProduct {
+export interface UnpopulatedProduct {
 	productId: number;
 	quantity: number;
 }
 
-interface Product {
+export interface Product {
 	id: number;
 	title: string;
 	price: number;
@@ -21,7 +21,7 @@ interface Product {
 	};
 }
 
-interface Cart {
+export interface Cart {
 	id: number;
 	userId: number;
 	date: Date;
