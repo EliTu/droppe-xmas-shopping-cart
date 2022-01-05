@@ -6,6 +6,7 @@ import { RootState, useAppDispatch } from './redux/store';
 import { getCartsAsync } from './redux/slices/thunks';
 import { useSelector } from 'react-redux';
 import { Status } from './redux/slices/types';
+import { ShopPage } from './components/ShopPage';
 
 function App() {
 	const dispatch = useAppDispatch();
@@ -22,7 +23,7 @@ function App() {
 			<MainLayout>
 				{status === Status.IDLE && (
 					<Routes>
-						<Route path="/" element={<div>Some content</div>} />
+						<Route path="/" element={<ShopPage />} />
 					</Routes>
 				)}
 			</MainLayout>

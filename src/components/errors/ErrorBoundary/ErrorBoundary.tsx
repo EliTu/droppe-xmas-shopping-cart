@@ -9,6 +9,7 @@ interface ErrorBoundaryState {
 	hasError: boolean;
 }
 
+// catch any error from down the app components tree and display a fallback error page
 class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
 	public state: ErrorBoundaryState = {
 		hasError: false,
