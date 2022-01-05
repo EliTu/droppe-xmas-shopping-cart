@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { ShopInitialState, Status, WishListUser } from './types';
+import { CartWithPopulatedProducts, Product, ShopInitialState, Status } from './types';
 import { getCartsAsync } from './thunks';
 import { WISH_LIST_USERS } from './constants';
 
@@ -16,16 +16,18 @@ const initialState: ShopInitialState = {
 export const shopSlice = createSlice({
 	name: 'shop',
 	initialState: initialState,
+	// non-async actions
 	reducers: {
-		setRelevantProducts: (state, { payload }) => {
+		setRelevantProducts: (state, { payload }: PayloadAction<Product[]>) => {
 			return { ...state, relevantProducts: payload };
 		},
 	},
+	// define async actions
 	extraReducers: ({ addCase }) => {
 		addCase(getCartsAsync.pending, state => {
 			return { ...state, status: Status.LOADING };
 		});
-		addCase(getCartsAsync.fulfilled, (state, { payload }) => {
+		addCase(getCartsAsync.fulfilled, (state, { payload }: PayloadAction<CartWithPopulatedProducts[] | undefined>) => {
 			return {
 				...state,
 				status: Status.IDLE,
