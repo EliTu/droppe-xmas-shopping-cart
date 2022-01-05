@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { FlexRowDiv } from '../../../GlobalStyles.styled';
 
-const HeaderContainer = styled.header`
+export const HeaderContainer = styled.header`
 	height: 4rem;
 	display: flex;
 	background-color: dodgerblue;
@@ -10,7 +10,7 @@ const HeaderContainer = styled.header`
 	user-select: none;
 `;
 
-const TitleContainer = styled(FlexRowDiv)`
+export const TitleContainer = styled(FlexRowDiv)`
 	align-items: center;
 
 	&::after {
@@ -23,9 +23,7 @@ const TitleContainer = styled(FlexRowDiv)`
 	}
 `;
 
-const MainTitle = styled.h1`
+export const MainTitle = styled.h1`
 	font-size: 24px;
 	color: #100e0ec2;
 `;
-
-export { HeaderContainer, TitleContainer, MainTitle };
