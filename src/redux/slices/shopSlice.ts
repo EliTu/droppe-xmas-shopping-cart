@@ -1,29 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { ShopInitialState, Status, WishListUser } from './types';
 import { getCartsAsync } from './thunks';
-
-const WISH_LIST_USERS: ReadonlyArray<WishListUser> = [
-	{
-		name: 'Harry',
-		associatedCartId: 1,
-	},
-	{
-		name: 'Ron',
-		associatedCartId: 2,
-	},
-	{
-		name: 'Hermione',
-		associatedCartId: 3,
-	},
-	{
-		name: 'Ginny',
-		associatedCartId: 4,
-	},
-	{
-		name: 'Luna',
-		associatedCartId: 5,
-	},
-];
+import { WISH_LIST_USERS } from './constants';
 
 const initialState: ShopInitialState = {
 	wishListUsers: WISH_LIST_USERS,

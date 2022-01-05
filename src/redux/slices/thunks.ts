@@ -1,17 +1,16 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
+import { BASE_URL } from './constants';
+import { getApiDataByIdList } from './helpers';
 import { setRelevantProducts } from './shopSlice';
 import { Cart, CartWithPopulatedProducts, Product } from './types';
-
-const BASE_URL = 'https://fakestoreapi.com';
 
 export const getCartsAsync = createAsyncThunk(
 	'getAllCartsByUserCartId',
 	async (userCartIds: number[], { rejectWithValue, dispatch }) => {
 		try {
 			// get data for all the relevant carts, without the full cart products data
-			const getCartPromises = userCartIds.map(cartId => axios.get<Cart>(`${BASE_URL}/carts/${cartId}`));
-			const cartsDataRes = (await Promise.all(getCartPromises)).map(promiseRes => promiseRes.data);
+			const cartsDataRes = await getApiDataByIdList<Cart>(userCartIds, 'carts');
 
 			// once the cartData has arrived, populate the relevant cart items with the full product data
 			if (cartsDataRes.length) {
@@ -24,16 +23,16 @@ export const getCartsAsync = createAsyncThunk(
 					}
 				}
 
-				const productsPromises = [...productMapCache.values()].map(productId =>
-					axios.get<Product>(`${BASE_URL}/products/${productId}`)
-				);
-				const fullProductDataRes = (await Promise.all(productsPromises)).map(promiseRes => promiseRes.data);
-				dispatch(setRelevantProducts(fullProductDataRes));
+				// get the full products data from the API for all the relevant cart products
+				const productIdsList = [...productMapCache.values()];
+				const fullProductDataRes = await getApiDataByIdList<Product>(productIdsList, 'products');
+
+				dispatch(setRelevantProducts(fullProductDataRes)); // meanwhile, set the store's relevant products list
 
 				// go over the previous cart data and replace the products with the products full data
 				const cartDataWithPopulatedProducts: CartWithPopulatedProducts[] = cartsDataRes.map(cart => {
 					const productsData = cart.products.map(
-						cartProduct => fullProductDataRes.find(productData => productData.id === cartProduct.productId)!
+						cartProduct => fullProductDataRes.find(productData => productData.id === cartProduct.productId)! // a product is certain to be found
 					);
 					return { ...cart, products: productsData };
 				});
