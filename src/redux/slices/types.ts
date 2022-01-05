@@ -28,6 +28,10 @@ export interface Cart {
 	products: UnpopulatedProduct[];
 }
 
+export interface CartWithPopulatedProducts extends Omit<Cart, 'products'> {
+	products: Product[];
+}
+
 export enum Status {
 	IDLE = 'idle',
 	LOADING = 'loading',
@@ -35,11 +39,11 @@ export enum Status {
 }
 
 export interface ShopInitialState {
-	carts: Cart[];
+	carts: CartWithPopulatedProducts[];
 	wishListUsers: ReadonlyArray<WishListUser>; // in the case of this demo app, use an immutable static list of users, otherwise it shouldn't be ReadonlyArray
-	products: Product[];
-	acceptedCarts: Cart[];
-	disregardedCarts: Cart[];
+	relevantProducts: Product[];
+	acceptedCarts: CartWithPopulatedProducts[];
+	disregardedCarts: CartWithPopulatedProducts[];
 	status: Status;
 	errorMessage: string | undefined;
 }

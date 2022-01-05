@@ -30,7 +30,7 @@ const initialState: ShopInitialState = {
 	carts: [],
 	acceptedCarts: [],
 	disregardedCarts: [],
-	products: [],
+	relevantProducts: [],
 	status: Status.IDLE,
 	errorMessage: undefined,
 };
@@ -38,7 +38,11 @@ const initialState: ShopInitialState = {
 export const shopSlice = createSlice({
 	name: 'shop',
 	initialState: initialState,
-	reducers: {},
+	reducers: {
+		setRelevantProducts: (state, { payload }) => {
+			return { ...state, relevantProducts: payload };
+		},
+	},
 	extraReducers: ({ addCase }) => {
 		addCase(getCartsAsync.pending, state => {
 			return { ...state, status: Status.LOADING };
@@ -61,6 +65,6 @@ export const shopSlice = createSlice({
 });
 
 // Action creators are generated for each case reducer function
-export const {} = shopSlice.actions;
+export const { setRelevantProducts } = shopSlice.actions;
 
 export default shopSlice.reducer;
