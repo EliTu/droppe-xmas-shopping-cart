@@ -1,4 +1,6 @@
 import styled from 'styled-components';
+import { FlexRowDiv } from '../../GlobalStyles.styled';
+import Spinner from '../ui/Spinner/Spinner';
 
 const MainAppLayout = styled.div`
 	width: 100%;
@@ -13,4 +15,13 @@ const ContentContainer = styled.main`
 	min-height: calc(100vh - 4rem - 4rem);
 `;
 
-export { MainAppLayout, ContentContainer };
+const FullPageLoader = styled(FlexRowDiv).attrs(() => ({
+	children: <Spinner size={22} />,
+}))`
+	min-width: inherit;
+	min-height: inherit;
+	justify-content: center;
+	align-items: center;
+`;
+
+export { MainAppLayout, ContentContainer, FullPageLoader };

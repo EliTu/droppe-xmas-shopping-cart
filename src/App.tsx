@@ -18,20 +18,17 @@ function App() {
 	}, []);
 
 	return (
-		<>
+		<Router>
 			<GlobalStyles />
-			<Router>
-				<MainLayout>
-					{status === Status.LOADING && <Spinner size={22} />}
-					{status === Status.IDLE && (
-						<Routes>
-							<Route path="/" element={<div>Some content</div>} />
-							<Route path="/browse-items" element={<div>Browse Items</div>} />
-						</Routes>
-					)}
-				</MainLayout>
-			</Router>
-		</>
+			<MainLayout>
+				{status === Status.IDLE && (
+					<Routes>
+						<Route path="/" element={<div>Some content</div>} />
+						<Route path="/browse-items" element={<div>Browse Items</div>} />
+					</Routes>
+				)}
+			</MainLayout>
+		</Router>
 	);
 }
 
