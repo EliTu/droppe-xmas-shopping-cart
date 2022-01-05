@@ -1,6 +1,4 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import axios from 'axios';
-import { BASE_URL } from './constants';
 import { getApiDataByIdList } from './helpers';
 import { setRelevantProducts } from './shopSlice';
 import { Cart, CartWithPopulatedProducts, Product } from './types';
@@ -30,14 +28,14 @@ export const getCartsAsync = createAsyncThunk(
 				dispatch(setRelevantProducts(fullProductDataRes)); // meanwhile, set the store's relevant products list
 
 				// go over the previous cart data and replace the products with the products full data
-				const cartDataWithPopulatedProducts: CartWithPopulatedProducts[] = cartsDataRes.map(cart => {
+				const cartsWithPopulatedProducts: CartWithPopulatedProducts[] = cartsDataRes.map(cart => {
 					const productsData = cart.products.map(
 						cartProduct => fullProductDataRes.find(productData => productData.id === cartProduct.productId)! // a product is certain to be found
 					);
 					return { ...cart, products: productsData };
 				});
 
-				return cartDataWithPopulatedProducts;
+				return cartsWithPopulatedProducts;
 			}
 		} catch (error) {
 			if (error instanceof Error) {

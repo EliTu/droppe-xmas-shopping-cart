@@ -1,12 +1,11 @@
 import { useEffect } from 'react';
-import MainLayout from './components/Layout/MainLayout';
+import MainLayout from './components/layout/MainLayout';
 import GlobalStyles from './GlobalStyles.styled';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { RootState, useAppDispatch } from './redux/store';
 import { getCartsAsync } from './redux/slices/thunks';
 import { useSelector } from 'react-redux';
 import { Status } from './redux/slices/types';
-import Spinner from './components/ui/Spinner/Spinner';
 
 function App() {
 	const dispatch = useAppDispatch();
@@ -24,7 +23,6 @@ function App() {
 				{status === Status.IDLE && (
 					<Routes>
 						<Route path="/" element={<div>Some content</div>} />
-						<Route path="/browse-items" element={<div>Browse Items</div>} />
 					</Routes>
 				)}
 			</MainLayout>
