@@ -1,7 +1,7 @@
-import React, { useMemo } from 'react';
+import { useMemo } from 'react';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../redux/store';
-import SingleWishList from './SingleWishList/SingleWishList';
+import { SingleWishList } from './SingleWishList';
 import { WishListsContainer, WishListsSectionContainer } from './WishLists.styled';
 
 function WishLists() {

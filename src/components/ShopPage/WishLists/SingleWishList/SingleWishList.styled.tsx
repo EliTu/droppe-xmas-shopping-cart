@@ -47,3 +47,8 @@ export const FooterDataItem = styled.span`
 		}
 	}
 `;
+
+export const DataItemLabel = styled.span<{ $isValue?: boolean }>`
+	font-weight: ${props => (props.$isValue ? 'bold' : '')};
+	margin-inline-start: ${props => (props.$isValue ? '0.2rem' : '')};
+`;

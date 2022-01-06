@@ -1,9 +1,11 @@
-import React, { useMemo } from 'react';
+import { useMemo } from 'react';
 import format from 'date-fns/format';
+import { v4 as uuid } from 'uuid';
 import { CartWithPopulatedProducts, WishListUser } from '../../../../redux/slices/types';
 import formatPrice from '../../../../utils/formatPrice';
-import WishListProduct from './WishListProduct/Product';
+import { WishListProduct } from './WishListProduct';
 import {
+	DataItemLabel,
 	FooterDataItem,
 	ProductsContainer,
 	SingleWishListContainer,
@@ -23,13 +25,13 @@ function SingleWishList({ WishListOwner, cartData }: WishListProps) {
 	const { date, products } = cartData;
 
 	const title = `${WishListOwner.name}'s Wish List`;
-	const formattedDate = format(new Date(date), 'MM/dd/yyyy');
-	const totalListProductsPrice = products.reduce((acc, currentProduct) => acc + currentProduct.price, 0);
+	const formattedDate = `Created at: ${format(new Date(date), 'MM/dd/yyyy')}`;
 
+	const totalListProductsPrice = products.reduce((acc, currentProduct) => acc + currentProduct.price, 0);
 	const footerDataItems = useMemo(
 		() => [
-			{ label: 'Number of products in cart:', value: products.length },
-			{ label: 'Total cart price:', value: formatPrice(totalListProductsPrice) },
+			{ label: 'Number of products in list', value: products.length },
+			{ label: 'Total list price', value: formatPrice(totalListProductsPrice) },
 		],
 		[products, totalListProductsPrice]
 	);
@@ -38,17 +40,18 @@ function SingleWishList({ WishListOwner, cartData }: WishListProps) {
 		<SingleWishListContainer>
 			<WishListHeader>
 				<WishListTitle>{title}</WishListTitle>
-				<WishListDate>Created at: {formattedDate}</WishListDate>
+				<WishListDate>{formattedDate}</WishListDate>
 			</WishListHeader>
 			<ProductsContainer>
 				{products.map(product => (
-					<WishListProduct productData={product} />
+					<WishListProduct key={uuid()} productData={product} />
 				))}
 			</ProductsContainer>
 			<WishListFooter>
 				{footerDataItems.map(({ label, value }) => (
-					<FooterDataItem>
-						{label} {value}
+					<FooterDataItem key={label}>
+						<DataItemLabel>{label}:</DataItemLabel>
+						<DataItemLabel $isValue>{value}</DataItemLabel>
 					</FooterDataItem>
 				))}
 			</WishListFooter>

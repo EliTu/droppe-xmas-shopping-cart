@@ -1,6 +1,7 @@
 export interface WishListUser {
 	name: string;
 	associatedCartId: number;
+	favoriteProductId: number;
 }
 
 export interface UnpopulatedProduct {
