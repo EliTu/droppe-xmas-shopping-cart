@@ -3,7 +3,7 @@ import { FlexColumnDiv, FlexRowDiv } from '../../../../../GlobalStyles.styled';
 
 export const ProductContainer = styled(FlexRowDiv)`
 	height: auto;
-	border: 1px solid #8a8a8abc;
+	border-bottom: 1px solid #8a8a8abc;
 `;
 
 export const ProductImageContainer = styled(FlexRowDiv)`
