@@ -24,7 +24,7 @@ export interface Product {
 export interface Cart {
 	id: number;
 	userId: number;
-	date: Date;
+	date: string;
 	products: UnpopulatedProduct[];
 }
 
