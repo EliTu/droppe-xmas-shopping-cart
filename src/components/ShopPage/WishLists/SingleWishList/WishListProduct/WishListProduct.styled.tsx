@@ -11,7 +11,6 @@ export const ProductImageContainer = styled(FlexRowDiv)`
 	width: 8rem;
 	justify-content: center;
 	padding: 0.5rem;
-	border-right: 1px solid #8a8a8abc;
 `;
 
 export const ProductImage = styled.img`
@@ -24,9 +23,10 @@ export const ProductInfoContainer = styled(FlexColumnDiv)`
 	padding: 0.5rem;
 `;
 
-export const ProductTitle = styled.span`
+export const ProductTitle = styled.span<{ $isFavorite: boolean }>`
 	font-size: 16px;
 	font-weight: bold;
+	color: ${props => props.$isFavorite && 'goldenrod'};
 `;
 
 export const RatingContainer = styled(FlexRowDiv)`
@@ -52,8 +52,21 @@ export const RightSideContainer = styled(FlexColumnDiv)`
 	padding: 0.5rem 0;
 `;
 
-export const PriceSpan = styled.span`
+export const PriceSpan = styled.span<{ $isFavorite: boolean }>`
 	font-weight: bold;
 	font-size: 18px;
 	margin: 0.5rem 0;
+	color: ${props => props.$isFavorite && 'goldenrod'};
+`;
+
+export const FavoriteBadge = styled.span.attrs(() => ({
+	children: 'Favorite',
+}))`
+	display: inline-block;
+	font-size: 10px;
+	padding: 0.2rem;
+	color: white;
+	background: goldenrod;
+	border-radius: 8px;
+	margin-inline-start: 0.5rem;
 `;

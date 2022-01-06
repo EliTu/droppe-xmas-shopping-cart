@@ -24,9 +24,10 @@ interface WishListProps {
 
 function SingleWishList({ WishListOwner, cartData }: WishListProps) {
 	const { date, products } = cartData;
+	const { name, favoriteProductId } = WishListOwner;
 	const [isWishListOpen, setIsWishListOpen] = useState(true);
 
-	const title = `${WishListOwner.name}'s Wish List`;
+	const title = `${name}'s Wish List`;
 	const formattedDate = `Created at: ${format(new Date(date), 'MM/dd/yyyy')}`;
 
 	const totalListProductsPrice = products.reduce((acc, currentProduct) => acc + currentProduct.price, 0);
@@ -52,7 +53,7 @@ function SingleWishList({ WishListOwner, cartData }: WishListProps) {
 			{isWishListOpen && (
 				<ProductsContainer>
 					{products.map(product => (
-						<WishListProduct key={uuid()} productData={product} />
+						<WishListProduct key={uuid()} productData={product} isFavorite={product.id === favoriteProductId} />
 					))}
 				</ProductsContainer>
 			)}
