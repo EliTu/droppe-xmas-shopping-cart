@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { FlexRowDiv } from '../../GlobalStyles.styled';
-import Spinner from '../ui/Spinner/Spinner';
+import { Spinner } from '../ui/Spinner';
 
 export const MainAppLayout = styled.div`
 	max-width: 100vw;
