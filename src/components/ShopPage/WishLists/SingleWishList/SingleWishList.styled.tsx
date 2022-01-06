@@ -3,13 +3,16 @@ import { FlexColumnDiv, FlexRowDiv } from '../../../../GlobalStyles.styled';
 
 export const SingleWishListContainer = styled(FlexColumnDiv)`
 	width: 100%;
-	border: 1px solid black;
+	border: 1px solid #8a8a8abc;
 	margin: 0.5rem 0;
+	border-top-left-radius: 0.3rem;
+	border-top-right-radius: 0.3rem;
+	box-shadow: 1px 1px 1px #8a8a8abc;
 `;
 
 export const WishListHeader = styled(FlexColumnDiv)`
 	width: 100%;
-	border-bottom: 1px solid black;
+	border-bottom: 1px solid #8a8a8abc;
 	padding: 0.5rem;
 	align-items: start;
 `;
@@ -33,12 +36,13 @@ export const WishListFooter = styled(FlexRowDiv)`
 `;
 
 export const FooterDataItem = styled.span`
+	/* the footer item divider */
 	&:not(:first-child) {
 		::before {
 			content: '';
 			width: 90%;
 			border: 0.5px solid black;
-			opacity: 0.4;
+			opacity: 0.5;
 			margin: 0 0.5rem;
 		}
 	}
