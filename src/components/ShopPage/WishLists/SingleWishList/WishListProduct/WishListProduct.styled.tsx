@@ -43,3 +43,17 @@ export const ProductInfoLabel = styled.span`
 	font-size: 12px;
 	font-weight: bold;
 `;
+
+export const RightSideContainer = styled(FlexColumnDiv)`
+	width: 6rem;
+	/* border-left: 1px solid #8a8a8abc; */
+	align-items: center;
+	justify-content: flex-end;
+	padding: 0.5rem 0;
+`;
+
+export const PriceSpan = styled.span`
+	font-weight: bold;
+	font-size: 18px;
+	margin: 0.5rem 0;
+`;

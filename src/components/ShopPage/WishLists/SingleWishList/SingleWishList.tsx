@@ -1,6 +1,6 @@
-import { useMemo } from 'react';
-import format from 'date-fns/format';
+import { useMemo, useState, memo } from 'react';
 import { v4 as uuid } from 'uuid';
+import format from 'date-fns/format';
 import { CartWithPopulatedProducts, WishListUser } from '../../../../redux/slices/types';
 import formatPrice from '../../../../utils/formatPrice';
 import { WishListProduct } from './WishListProduct';
@@ -13,6 +13,8 @@ import {
 	WishListFooter,
 	WishListHeader,
 	WishListTitle,
+	HeaderTitleArea,
+	ToggleWishListButton,
 } from './SingleWishList.styled';
 
 interface WishListProps {
@@ -21,8 +23,8 @@ interface WishListProps {
 }
 
 function SingleWishList({ WishListOwner, cartData }: WishListProps) {
-	console.log({ cartData, WishListOwner });
 	const { date, products } = cartData;
+	const [isWishListOpen, setIsWishListOpen] = useState(true);
 
 	const title = `${WishListOwner.name}'s Wish List`;
 	const formattedDate = `Created at: ${format(new Date(date), 'MM/dd/yyyy')}`;
@@ -36,17 +38,24 @@ function SingleWishList({ WishListOwner, cartData }: WishListProps) {
 		[products, totalListProductsPrice]
 	);
 
+	const toggleWishList = () => setIsWishListOpen(prevState => !prevState);
+
 	return (
 		<SingleWishListContainer>
 			<WishListHeader>
-				<WishListTitle>{title}</WishListTitle>
-				<WishListDate>{formattedDate}</WishListDate>
+				<HeaderTitleArea>
+					<WishListTitle>{title}</WishListTitle>
+					<WishListDate>{formattedDate}</WishListDate>
+				</HeaderTitleArea>
+				<ToggleWishListButton isWishListOpen={isWishListOpen} onClick={toggleWishList} />
 			</WishListHeader>
-			<ProductsContainer>
-				{products.map(product => (
-					<WishListProduct key={uuid()} productData={product} />
-				))}
-			</ProductsContainer>
+			{isWishListOpen && (
+				<ProductsContainer>
+					{products.map(product => (
+						<WishListProduct key={uuid()} productData={product} />
+					))}
+				</ProductsContainer>
+			)}
 			<WishListFooter>
 				{footerDataItems.map(({ label, value }) => (
 					<FooterDataItem key={label}>
@@ -59,4 +68,4 @@ function SingleWishList({ WishListOwner, cartData }: WishListProps) {
 	);
 }
 
-export default SingleWishList;
+export default memo(SingleWishList);

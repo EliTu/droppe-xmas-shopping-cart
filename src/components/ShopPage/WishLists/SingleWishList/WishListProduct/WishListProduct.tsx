@@ -1,15 +1,18 @@
 import { Rating } from 'react-simple-star-rating';
 import { Product } from '../../../../../redux/slices/types';
+import formatPrice from '../../../../../utils/formatPrice';
+import { Button } from '../../../../ui/Button';
 import { InfoLabel } from '../../../../ui/InfoLabel';
 import {
+	PriceSpan,
 	ProductContainer,
 	ProductImage,
 	ProductImageContainer,
 	ProductInfoContainer,
-	ProductInfoLabel,
 	ProductTitle,
 	RateCount,
 	RatingContainer,
+	RightSideContainer,
 } from './WishListProduct.styled';
 
 interface WishListProductProps {
@@ -18,6 +21,7 @@ interface WishListProductProps {
 
 function WishListProduct({ productData }: WishListProductProps) {
 	const { title, image, price, rating, description, category } = productData;
+	const formattedPrice = formatPrice(price);
 
 	return (
 		<ProductContainer>
@@ -34,6 +38,10 @@ function WishListProduct({ productData }: WishListProductProps) {
 				<InfoLabel label="Category" value={category} />
 				<InfoLabel label="Description" value={description} />
 			</ProductInfoContainer>
+			<RightSideContainer>
+				<PriceSpan>{formattedPrice}</PriceSpan>
+				<Button>Add to cart</Button>
+			</RightSideContainer>
 		</ProductContainer>
 	);
 }

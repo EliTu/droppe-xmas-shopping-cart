@@ -10,19 +10,34 @@ export const SingleWishListContainer = styled(FlexColumnDiv)`
 	box-shadow: 1px 1px 1px #8a8a8abc;
 `;
 
-export const WishListHeader = styled(FlexColumnDiv)`
+export const WishListHeader = styled(FlexRowDiv)`
 	width: 100%;
 	border-bottom: 1px solid #8a8a8abc;
 	padding: 0.5rem;
-	align-items: start;
+	justify-content: space-between;
+	align-items: end;
 `;
+
+export const HeaderTitleArea = styled(FlexColumnDiv)``;
 
 export const WishListTitle = styled.span`
 	font-weight: bold;
+	margin-bottom: 0.2rem;
 `;
 
 export const WishListDate = styled.span`
 	font-size: 12px;
+`;
+
+export const ToggleWishListButton = styled.span.attrs<{ isWishListOpen: boolean }>(({ isWishListOpen }) => ({
+	children: isWishListOpen ? 'Close List' : 'Open List',
+}))<{ isWishListOpen: boolean }>`
+	color: navy;
+	cursor: pointer;
+
+	&:hover {
+		color: dodgerblue;
+	}
 `;
 
 export const ProductsContainer = styled(FlexColumnDiv)`
