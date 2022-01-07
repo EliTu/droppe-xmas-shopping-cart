@@ -6,7 +6,7 @@ export const WISH_LIST_USERS: ReadonlyArray<WishListUser> = [
 	{
 		name: 'Harry',
 		associatedCartId: 1,
-		favoriteProductId: 1,
+		favoriteProductId: 3,
 	},
 	{
 		name: 'Ron',
