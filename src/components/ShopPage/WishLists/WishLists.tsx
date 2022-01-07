@@ -4,13 +4,8 @@ import { RootState } from '../../../redux/store';
 import { CheckboxGroup, CheckboxItem } from '../../ui/CheckboxGroup/';
 import { Option, Select } from '../../ui/Select';
 import { SingleWishList } from './SingleWishList';
-import {
-	WishListHeaderControlsContainer,
-	WishListsContainer,
-	WishListsHeaderContainer,
-	WishListsSectionContainer,
-	WishListsSectionHeader,
-} from './WishLists.styled';
+import { SectionContainer, SectionHeaderContainer, SectionHeader } from '../ShopPage.styled';
+import { WishListHeaderControlsContainer, WishListsContainer } from './WishLists.styled';
 
 export enum SortFields {
 	TITLE_DESC = 'title_desc',
@@ -74,14 +69,19 @@ function WishLists() {
 	);
 
 	return (
-		<WishListsSectionContainer>
-			<WishListsHeaderContainer>
-				<WishListsSectionHeader>{computedTitle}</WishListsSectionHeader>
+		<SectionContainer>
+			<SectionHeaderContainer>
+				<SectionHeader>{computedTitle}</SectionHeader>
 				<WishListHeaderControlsContainer>
-					<Select options={selectOptions} name="sort" onChange={handleSortSelectChange} />
+					<Select
+						options={selectOptions}
+						name="sort"
+						onChange={handleSortSelectChange}
+						outerLabel="Sort list products:"
+					/>
 					<CheckboxGroup items={checkboxItems} />
 				</WishListHeaderControlsContainer>
-			</WishListsHeaderContainer>
+			</SectionHeaderContainer>
 			<WishListsContainer>
 				{carts.map(cartData => {
 					const wishListOwner = wishListUsers.find(user => user.associatedCartId === cartData.id)!;
@@ -96,7 +96,7 @@ function WishLists() {
 					);
 				})}
 			</WishListsContainer>
-		</WishListsSectionContainer>
+		</SectionContainer>
 	);
 }
 
