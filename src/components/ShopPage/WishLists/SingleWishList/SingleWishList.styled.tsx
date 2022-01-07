@@ -29,17 +29,6 @@ export const WishListDate = styled.span`
 	font-size: 12px;
 `;
 
-export const ToggleWishListButton = styled.span.attrs<{ isWishListOpen: boolean }>(({ isWishListOpen }) => ({
-	children: isWishListOpen ? 'Hide Products' : 'Show Products',
-}))<{ isWishListOpen: boolean }>`
-	color: navy;
-	cursor: pointer;
-
-	&:hover {
-		color: dodgerblue;
-	}
-`;
-
 export const ProductsContainer = styled(FlexColumnDiv)`
 	width: 100%;
 `;

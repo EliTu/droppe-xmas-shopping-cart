@@ -5,9 +5,9 @@ export const ShopPageContainer = styled(FlexRowDiv)`
 	overflow: auto;
 `;
 
-export const SectionContainer = styled.section<{ $height?: number }>`
+export const SectionContainer = styled.section<{ $heightInVh?: number }>`
 	width: 50%;
-	height: ${props => (props.$height ? `${props.$height}vh` : 'auto')};
+	height: ${props => (props.$heightInVh ? `${props.$heightInVh}vh` : 'auto')};
 	margin: 0 1rem;
 `;
 

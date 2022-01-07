@@ -14,9 +14,9 @@ import {
 	WishListHeader,
 	WishListTitle,
 	HeaderTitleArea,
-	ToggleWishListButton,
 } from './SingleWishList.styled';
 import { SortFields } from '../WishLists';
+import { ToggleIndicator } from '../../../ui/ToggleIndicator';
 
 interface WishListProps {
 	cartData: CartWithPopulatedProducts;
@@ -27,7 +27,7 @@ interface WishListProps {
 
 function SingleWishList({ WishListOwner, cartData, sortParameter, showFavoritesOnly }: WishListProps) {
 	const { date, products, id: cartId } = cartData;
-	const { name, favoriteProductId, associatedCartId } = WishListOwner;
+	const { name, favoriteProductId } = WishListOwner;
 
 	const [isWishListOpen, setIsWishListOpen] = useState(true);
 
@@ -70,7 +70,7 @@ function SingleWishList({ WishListOwner, cartData, sortParameter, showFavoritesO
 					<WishListTitle>{title}</WishListTitle>
 					<WishListDate>{formattedDate}</WishListDate>
 				</HeaderTitleArea>
-				<ToggleWishListButton isWishListOpen={isWishListOpen} onClick={toggleWishList} />
+				<ToggleIndicator isOpen={isWishListOpen} toggleTargetLabel="products" onClick={toggleWishList} />
 			</WishListHeader>
 			{isWishListOpen && (
 				<ProductsContainer>
