@@ -22,9 +22,10 @@ interface WishListProps {
 	cartData: CartWithPopulatedProducts;
 	WishListOwner: WishListUser;
 	sortParameter: SortFields;
+	showFavoritesOnly: boolean;
 }
 
-function SingleWishList({ WishListOwner, cartData, sortParameter }: WishListProps) {
+function SingleWishList({ WishListOwner, cartData, sortParameter, showFavoritesOnly }: WishListProps) {
 	const { date, products } = cartData;
 	const { name, favoriteProductId } = WishListOwner;
 
@@ -42,13 +43,24 @@ function SingleWishList({ WishListOwner, cartData, sortParameter }: WishListProp
 		[products, totalListProductsPrice]
 	);
 
+	// check if a specific product has been marked as favorite by the wish list user
+	const checkIfFavorite = (productId: number) => productId === favoriteProductId;
+
+	// toggle open/closed list display state
 	const toggleWishList = () => setIsWishListOpen(prevState => !prevState);
+
+	const computedProductList = useMemo(() => {
+		if (showFavoritesOnly) {
+			return products.filter(product => checkIfFavorite(product.id));
+		}
+		return products;
+	}, [showFavoritesOnly, products]);
 
 	const sortedProducts = useMemo(() => {
 		// extract the correct field key and direction from the sort option value string (separated by an _)
 		const [field, direction] = sortParameter.split('_') as [field: keyof Product, direction: SortDirection];
-		return sortByField<Product>(products, field, direction);
-	}, [products, sortParameter]);
+		return sortByField<Product>(computedProductList, field, direction);
+	}, [products, sortParameter, computedProductList]);
 
 	return (
 		<SingleWishListContainer>
@@ -62,7 +74,7 @@ function SingleWishList({ WishListOwner, cartData, sortParameter }: WishListProp
 			{isWishListOpen && (
 				<ProductsContainer>
 					{sortedProducts.map(product => (
-						<WishListProduct key={uuid()} productData={product} isFavorite={product.id === favoriteProductId} />
+						<WishListProduct key={uuid()} productData={product} isFavorite={checkIfFavorite(product.id)} />
 					))}
 				</ProductsContainer>
 			)}

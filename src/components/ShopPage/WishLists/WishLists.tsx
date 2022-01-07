@@ -1,6 +1,7 @@
-import { useMemo, useState } from 'react';
+import { useMemo, useState, useCallback } from 'react';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../redux/store';
+import { CheckboxGroup, CheckboxItem } from '../../ui/CheckboxGroup/';
 import { Option, Select } from '../../ui/Select';
 import { SingleWishList } from './SingleWishList';
 import {
@@ -38,6 +39,8 @@ const selectOptions: Option[] = [
 
 function WishLists() {
 	const [sortParameter, setSortParameter] = useState(SortFields.TITLE_DESC);
+	const [showFavoritesOnly, setShowFavoritesOnly] = useState(false);
+
 	const { wishListUsers, carts } = useSelector(({ shop }: RootState) => shop);
 	const numberOfCarts = carts.length;
 
@@ -52,12 +55,30 @@ function WishLists() {
 		setSortParameter(prevParameter => (prevParameter !== selectedValue ? selectedValue : prevParameter));
 	};
 
+	const handleFavoriteCheckboxChange = useCallback(
+		() => setShowFavoritesOnly(prevChecked => !prevChecked),
+		[setShowFavoritesOnly]
+	);
+
+	const checkboxItems: CheckboxItem[] = useMemo(
+		() => [
+			{
+				label: 'Show favorites only',
+				name: 'favorites',
+				isChecked: showFavoritesOnly,
+				onChange: handleFavoriteCheckboxChange,
+			},
+		],
+		[showFavoritesOnly]
+	);
+
 	return (
 		<WishListsSectionContainer>
 			<WishListsHeaderContainer>
 				<h3>{computedTitle}</h3>
 				<WishListHeaderControlsContainer>
 					<Select options={selectOptions} name="sort" onChange={handleSortSelectChange} />
+					<CheckboxGroup items={checkboxItems} />
 				</WishListHeaderControlsContainer>
 			</WishListsHeaderContainer>
 			<WishListsContainer>
@@ -69,6 +90,7 @@ function WishLists() {
 							cartData={cartData}
 							WishListOwner={wishListOwner}
 							sortParameter={sortParameter}
+							showFavoritesOnly={showFavoritesOnly}
 						/>
 					);
 				})}
