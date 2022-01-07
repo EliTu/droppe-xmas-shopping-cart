@@ -4,9 +4,9 @@ import { addToSelectedProducts } from '../../../../../redux/slices/shopSlice';
 import { Product } from '../../../../../redux/slices/types';
 import { formatPrice } from '../../../../../utils';
 import { Button } from '../../../../ui/Button';
+import { FavoriteIndicatorBadge } from '../../../../ui/FavoriteIndicatorBadge';
 import { InfoLabel } from '../../../../ui/InfoLabel';
 import {
-	FavoriteBadge,
 	PriceSpan,
 	ProductContainer,
 	ProductImage,
@@ -39,7 +39,7 @@ function WishListProduct({ productData, isFavorite, cartId }: WishListProductPro
 			<ProductInfoContainer>
 				<ProductTitle $isFavorite={isFavorite}>
 					{title}
-					{isFavorite && <FavoriteBadge />}
+					{isFavorite && <FavoriteIndicatorBadge />}
 				</ProductTitle>
 				<RatingContainer>
 					<Rating ratingValue={0} initialValue={rating.rate} size={16} readonly />

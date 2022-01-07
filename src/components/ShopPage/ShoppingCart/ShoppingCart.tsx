@@ -10,11 +10,10 @@ interface SelectedProductData {
 	productData: Product;
 	amount: number;
 	availableInCarts: number[];
-	originCartId: number;
 }
 
 function ShoppingCart() {
-	const { wishListUsers, selectedProductsData, relevantProducts, carts } = useSelector(({ shop }: RootState) => shop);
+	const { selectedProductsData, relevantProducts, carts } = useSelector(({ shop }: RootState) => shop);
 
 	const computedProductsList = useMemo(
 		() =>
@@ -39,10 +38,10 @@ function ShoppingCart() {
 
 				return {
 					...selectedProductsMap,
-					[productId]: { productData, availableInCarts, amount: 1, originCartId: currentSelectedData.cartId },
+					[productId]: { productData, availableInCarts, amount: 1 },
 				};
 			}, {}),
-		[wishListUsers, selectedProductsData, relevantProducts, carts]
+		[selectedProductsData, relevantProducts, carts]
 	);
 
 	return (
@@ -51,15 +50,13 @@ function ShoppingCart() {
 				<SectionHeader>Your shopping cart:</SectionHeader>
 			</SectionHeaderContainer>
 			<SelectedProductsContainer>
-				{Object.values(computedProductsList).map(({ originCartId, productData, amount, availableInCarts }) => {
-					const { favoriteProductId } = wishListUsers.find(user => user.associatedCartId === originCartId)!;
+				{Object.values(computedProductsList).map(({ productData, amount, availableInCarts }) => {
 					return (
 						<SelectedProduct
 							key={productData.id}
 							productData={productData}
-							isFavorite={favoriteProductId === productData.id}
 							availableInCarts={availableInCarts}
-							amount={amount}
+							selectionAmount={amount}
 						/>
 					);
 				})}

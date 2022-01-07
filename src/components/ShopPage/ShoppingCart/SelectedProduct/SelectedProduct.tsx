@@ -1,12 +1,11 @@
-import { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useMemo } from 'react';
+import { useSelector } from 'react-redux';
 import { Rating } from 'react-simple-star-rating';
 import { Product } from '../../../../redux/slices/types';
+import { RootState } from '../../../../redux/store';
 import { formatPrice } from '../../../../utils';
-import { InfoLabel } from '../../../ui/InfoLabel';
-import { ToggleIndicator } from '../../../ui/ToggleIndicator';
+import { FavoriteIndicatorBadge } from '../../../ui/FavoriteIndicatorBadge';
 import {
-	FavoriteBadge,
 	PriceSpan,
 	ProductContainer,
 	ProductImage,
@@ -15,23 +14,38 @@ import {
 	ProductTitle,
 	RateCount,
 	RatingContainer,
-	RightSideContainer,
+	RequestedByContainer,
+	SelectedProductSummary,
+	SummaryLabel,
+	UserNameSpan,
 } from './SelectedProduct.styled';
 
 interface SelectedProduct {
 	productData: Product;
-	isFavorite: boolean;
-	amount: number;
+	selectionAmount: number;
 	availableInCarts: number[];
 }
 
-function SelectedProduct({ productData, isFavorite, amount, availableInCarts }: SelectedProduct) {
-	const { title, image, price, rating, description, category } = productData;
-	const [showDetails, setShowDetails] = useState(false);
-	const formattedPrice = formatPrice(price);
+function SelectedProduct({ productData, selectionAmount, availableInCarts }: SelectedProduct) {
+	const { title, image, price, rating } = productData;
+	const { wishListUsers } = useSelector(({ shop }: RootState) => shop);
 
-	// toggle open/closed extra info display state
-	const toggleProductDetailsBox = () => setShowDetails(prevState => !prevState);
+	const formattedPrice = formatPrice(price * selectionAmount);
+
+	const relevantUserNamesList = useMemo(
+		() =>
+			wishListUsers
+				.filter(({ associatedCartId }) => availableInCarts.includes(associatedCartId))
+				.map(({ name }) => name),
+		[availableInCarts, wishListUsers]
+	);
+
+	const favoriteInList = useMemo(
+		() => wishListUsers.filter(({ favoriteProductId }) => favoriteProductId === productData.id),
+		[wishListUsers, productData]
+	);
+
+	const isFavoriteInAnyList = Boolean(favoriteInList.length);
 
 	return (
 		<ProductContainer>
@@ -39,26 +53,30 @@ function SelectedProduct({ productData, isFavorite, amount, availableInCarts }: 
 				<ProductImage alt={`Image of ${title}`} src={image} />
 			</ProductImageContainer>
 			<ProductInfoContainer>
-				<ProductTitle $isFavorite={isFavorite}>
+				<ProductTitle $isFavorite={isFavoriteInAnyList}>
 					{title}
-					{isFavorite && <FavoriteBadge />}
+					{isFavoriteInAnyList && <FavoriteIndicatorBadge amount={favoriteInList.length} />}
 				</ProductTitle>
 				<RatingContainer>
 					<Rating ratingValue={0} initialValue={rating.rate} size={16} readonly />
 					<RateCount>{rating.rate} out of 5</RateCount>
 					<RateCount> - Rated by {rating.count} reviewers</RateCount>
 				</RatingContainer>
-				{/* <ToggleIndicator isOpen={showDetails} toggleTargetLabel="Details" onClick={toggleProductDetailsBox} />
-				{showDetails && (
-					<>
-						<InfoLabel label="Category" value={category} />
-						<InfoLabel label="Description" value={description} />
-					</>
-				)} */}
+				<SelectedProductSummary>
+					<PriceSpan $isFavorite={isFavoriteInAnyList}>{formattedPrice}</PriceSpan>
+					<RequestedByContainer>
+						<SummaryLabel>Requested by:</SummaryLabel>
+						{relevantUserNamesList.map(name => {
+							const isFavorite = favoriteInList.map(({ name }) => name).includes(name);
+							return (
+								<UserNameSpan $isFavorite={isFavorite} key={name}>
+									{name}
+								</UserNameSpan>
+							);
+						})}
+					</RequestedByContainer>
+				</SelectedProductSummary>
 			</ProductInfoContainer>
-			{/* <RightSideContainer>
-				<PriceSpan $isFavorite={isFavorite}>{formattedPrice}</PriceSpan>
-			</RightSideContainer> */}
 		</ProductContainer>
 	);
 }

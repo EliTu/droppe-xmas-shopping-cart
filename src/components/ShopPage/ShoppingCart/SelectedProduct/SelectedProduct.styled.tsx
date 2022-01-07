@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { FlexColumnDiv, FlexRowDiv } from '../../../../GlobalStyles.styled';
+import { BeforePseudoDivider, FlexColumnDiv, FlexRowDiv } from '../../../../GlobalStyles.styled';
 
 export const ProductContainer = styled(FlexRowDiv)`
 	height: 7rem;
@@ -45,27 +45,36 @@ export const ProductInfoLabel = styled.span`
 	font-weight: bold;
 `;
 
-export const RightSideContainer = styled(FlexColumnDiv)`
-	width: 6rem;
-	align-items: center;
-	justify-content: center;
-`;
-
 export const PriceSpan = styled.span<{ $isFavorite: boolean }>`
 	font-weight: bold;
-	font-size: 18px;
-	margin: 0.5rem 0;
+	font-size: 15px;
 	color: ${props => props.$isFavorite && 'goldenrod'};
 `;
 
-export const FavoriteBadge = styled.span.attrs(() => ({
-	children: 'Favorite',
-}))`
-	display: inline-block;
-	font-size: 10px;
-	padding: 0.2rem;
-	color: white;
-	background: goldenrod;
-	border-radius: 8px;
-	margin-inline-start: 0.5rem;
+export const SelectedProductSummary = styled(FlexRowDiv)`
+	align-items: center;
+	height: 5rem;
+`;
+
+export const SummaryLabel = styled.span`
+	font-weight: bold;
+	margin-inline-end: 0.2rem;
+`;
+
+export const RequestedByContainer = styled(FlexRowDiv)`
+	font-size: 13px;
+
+	${BeforePseudoDivider}
+`;
+
+export const UserNameSpan = styled.span<{ $isFavorite: boolean }>`
+	margin: 0 0.1rem;
+	color: ${props => (props.$isFavorite ? 'goldenrod' : 'initial')};
+
+	/* set a comma after each name except for the last one */
+	&:not(:last-child) {
+		&::after {
+			content: ',';
+		}
+	}
 `;

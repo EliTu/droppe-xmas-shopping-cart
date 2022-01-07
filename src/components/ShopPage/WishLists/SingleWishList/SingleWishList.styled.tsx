@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { FlexColumnDiv, FlexRowDiv } from '../../../../GlobalStyles.styled';
+import { FlexColumnDiv, FlexRowDiv, BeforePseudoDivider } from '../../../../GlobalStyles.styled';
 
 export const SingleWishListContainer = styled(FlexColumnDiv)`
 	width: 100%;
@@ -42,13 +42,7 @@ export const WishListFooter = styled(FlexRowDiv)`
 export const FooterDataItem = styled.span`
 	/* the footer item divider */
 	&:not(:first-child) {
-		::before {
-			content: '';
-			width: 90%;
-			border: 0.5px solid black;
-			opacity: 0.5;
-			margin: 0 0.5rem;
-		}
+		${BeforePseudoDivider}
 	}
 `;
 

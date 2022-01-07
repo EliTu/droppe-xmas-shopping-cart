@@ -57,15 +57,3 @@ export const PriceSpan = styled.span<{ $isFavorite: boolean }>`
 	margin: 0.5rem 0;
 	color: ${props => props.$isFavorite && 'goldenrod'};
 `;
-
-export const FavoriteBadge = styled.span.attrs(() => ({
-	children: 'Favorite',
-}))`
-	display: inline-block;
-	font-size: 10px;
-	padding: 0.2rem;
-	color: white;
-	background: goldenrod;
-	border-radius: 8px;
-	margin-inline-start: 0.5rem;
-`;

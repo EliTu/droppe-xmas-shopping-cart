@@ -38,7 +38,7 @@ function SingleWishList({ WishListOwner, cartData, sortParameter, showFavoritesO
 	const footerDataItems = useMemo(
 		() => [
 			{ label: 'Number of products in list', value: products.length },
-			{ label: 'Total list price', value: formatPrice(totalListProductsPrice) },
+			{ label: 'Total wish list price', value: formatPrice(totalListProductsPrice) },
 		],
 		[products, totalListProductsPrice]
 	);

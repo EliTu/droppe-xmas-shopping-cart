@@ -1,4 +1,4 @@
-import styled, { createGlobalStyle } from 'styled-components';
+import styled, { createGlobalStyle, css } from 'styled-components';
 
 const GlobalStyles = createGlobalStyle`
   * {
@@ -25,6 +25,15 @@ export const FlexRowDiv = styled.div`
 export const FlexColumnDiv = styled.div`
 	display: flex;
 	flex-direction: column;
+`;
+
+export const BeforePseudoDivider = css`
+	&::before {
+		content: '';
+		border: 0.5px solid black;
+		opacity: 0.5;
+		margin: 0 0.5rem;
+	}
 `;
 
 export default GlobalStyles;
