@@ -47,7 +47,7 @@ export const ProductInfoLabel = styled.span`
 
 export const PriceSpan = styled.span<{ $isFavorite: boolean }>`
 	font-weight: bold;
-	font-size: 15px;
+	font-size: 17px;
 	color: ${props => props.$isFavorite && 'goldenrod'};
 `;
 
@@ -58,13 +58,12 @@ export const SelectedProductSummary = styled(FlexRowDiv)`
 
 export const SummaryLabel = styled.span`
 	font-weight: bold;
-	margin-inline-end: 0.2rem;
+	font-size: 13px;
+	${BeforePseudoDivider}
 `;
 
 export const RequestedByContainer = styled(FlexRowDiv)`
 	font-size: 13px;
-
-	${BeforePseudoDivider}
 `;
 
 export const UserNameSpan = styled.span<{ $isFavorite: boolean }>`

@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 import { Rating } from 'react-simple-star-rating';
 import { Product } from '../../../../redux/slices/types';
 import { RootState } from '../../../../redux/store';
-import { formatPrice } from '../../../../utils';
+import { calculateDiscount, formatPrice } from '../../../../utils';
 import { FavoriteIndicatorBadge } from '../../../ui/FavoriteIndicatorBadge';
 import {
 	PriceSpan,
@@ -30,8 +30,27 @@ function SelectedProduct({ productData, selectionAmount, availableInCarts }: Sel
 	const { title, image, price, rating } = productData;
 	const { wishListUsers } = useSelector(({ shop }: RootState) => shop);
 
-	const formattedPrice = formatPrice(price * selectionAmount);
+	// calculate the price according to the amount selected (discount)
+	const { formattedPrice, formattedAmountReduced } = useMemo(() => {
+		// if the it's a single product, escape calculating a discount as it doesn't qualify for a discount
+		if (selectionAmount <= 1) {
+			return {
+				formattedPrice: formatPrice(price),
+				formattedDiscountAmount: 0,
+			};
+		}
 
+		const originalPrice = price * selectionAmount;
+		const discountPercentage = selectionAmount * 10; // represent the percentage as an integer
+		const { amountAfterDiscount, amountReduced } = calculateDiscount(originalPrice, discountPercentage);
+
+		return {
+			formattedPrice: formatPrice(amountAfterDiscount),
+			formattedAmountReduced: formatPrice(amountReduced),
+		};
+	}, [price, selectionAmount]);
+
+	// get a list of names of all the users that have requested this product
 	const relevantUserNamesList = useMemo(
 		() =>
 			wishListUsers
@@ -40,6 +59,7 @@ function SelectedProduct({ productData, selectionAmount, availableInCarts }: Sel
 		[availableInCarts, wishListUsers]
 	);
 
+	// get a list of users where the product is a selected favorite
 	const favoriteInList = useMemo(
 		() => wishListUsers.filter(({ favoriteProductId }) => favoriteProductId === productData.id),
 		[wishListUsers, productData]
@@ -63,7 +83,12 @@ function SelectedProduct({ productData, selectionAmount, availableInCarts }: Sel
 					<RateCount> - Rated by {rating.count} reviewers</RateCount>
 				</RatingContainer>
 				<SelectedProductSummary>
-					<PriceSpan $isFavorite={isFavoriteInAnyList}>{formattedPrice}</PriceSpan>
+					<PriceSpan $isFavorite={isFavoriteInAnyList}>
+						{formattedPrice} x {selectionAmount}
+					</PriceSpan>
+					{selectionAmount > 1 && (
+						<SummaryLabel>{`Discount: ${selectionAmount * 10}% (-${formattedAmountReduced})`}</SummaryLabel>
+					)}
 					<RequestedByContainer>
 						<SummaryLabel>Requested by:</SummaryLabel>
 						{relevantUserNamesList.map(name => {
