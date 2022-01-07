@@ -1,7 +1,6 @@
 export interface Option {
 	value: string;
 	label: string;
-	isDefault?: boolean;
 }
 
 interface SelectProps {
@@ -13,9 +12,9 @@ interface SelectProps {
 
 function Select({ name, onChange, options, disabled }: SelectProps) {
 	return (
-		<select name={name} onChange={onChange}>
-			{options.map(({ label, value, isDefault }) => (
-				<option selected={isDefault} value={value}>
+		<select name={name} onChange={onChange} disabled={disabled}>
+			{options.map(({ label, value }) => (
+				<option key={label} value={value}>
 					{label}
 				</option>
 			))}

@@ -1,8 +1,8 @@
 import { useMemo, useState, memo } from 'react';
 import { v4 as uuid } from 'uuid';
 import format from 'date-fns/format';
-import { CartWithPopulatedProducts, WishListUser } from '../../../../redux/slices/types';
-import formatPrice from '../../../../utils/formatPrice';
+import { CartWithPopulatedProducts, Product, WishListUser } from '../../../../redux/slices/types';
+import { formatPrice, sortByField, SortDirection } from '../../../../utils';
 import { WishListProduct } from './WishListProduct';
 import {
 	DataItemLabel,
@@ -16,17 +16,18 @@ import {
 	HeaderTitleArea,
 	ToggleWishListButton,
 } from './SingleWishList.styled';
-import { SortOptions } from '../WishLists';
+import { SortFields } from '../WishLists';
 
 interface WishListProps {
 	cartData: CartWithPopulatedProducts;
 	WishListOwner: WishListUser;
-	sortParameter: SortOptions;
+	sortParameter: SortFields;
 }
 
 function SingleWishList({ WishListOwner, cartData, sortParameter }: WishListProps) {
 	const { date, products } = cartData;
 	const { name, favoriteProductId } = WishListOwner;
+
 	const [isWishListOpen, setIsWishListOpen] = useState(true);
 
 	const title = `${name}'s Wish List`;
@@ -43,6 +44,12 @@ function SingleWishList({ WishListOwner, cartData, sortParameter }: WishListProp
 
 	const toggleWishList = () => setIsWishListOpen(prevState => !prevState);
 
+	const sortedProducts = useMemo(() => {
+		// extract the correct field key and direction from the sort option value string (separated by an _)
+		const [field, direction] = sortParameter.split('_') as [field: keyof Product, direction: SortDirection];
+		return sortByField<Product>(products, field, direction);
+	}, [products, sortParameter]);
+
 	return (
 		<SingleWishListContainer>
 			<WishListHeader>
@@ -54,7 +61,7 @@ function SingleWishList({ WishListOwner, cartData, sortParameter }: WishListProp
 			</WishListHeader>
 			{isWishListOpen && (
 				<ProductsContainer>
-					{products.map(product => (
+					{sortedProducts.map(product => (
 						<WishListProduct key={uuid()} productData={product} isFavorite={product.id === favoriteProductId} />
 					))}
 				</ProductsContainer>

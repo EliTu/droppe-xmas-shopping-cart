@@ -10,30 +10,34 @@ import {
 	WishListsSectionContainer,
 } from './WishLists.styled';
 
-export enum SortOptions {
-	NAME = 'name',
-	MOST_EXPENSIVE = 'price_asc',
-	CHEAPEST = 'price_desc',
+export enum SortFields {
+	TITLE_DESC = 'title_desc',
+	TITLE_ASC = 'title_asc',
+	MOST_EXPENSIVE = 'price_desc',
+	CHEAPEST = 'price_asc',
 }
 
 const selectOptions: Option[] = [
 	{
-		value: SortOptions.NAME,
-		label: 'Name',
-		isDefault: true,
+		value: SortFields.TITLE_DESC,
+		label: 'Product Title - A-Z',
 	},
 	{
-		value: SortOptions.CHEAPEST,
+		value: SortFields.TITLE_ASC,
+		label: 'Product Title - Z-A',
+	},
+	{
+		value: SortFields.CHEAPEST,
 		label: 'Cheapest',
 	},
 	{
-		value: SortOptions.MOST_EXPENSIVE,
+		value: SortFields.MOST_EXPENSIVE,
 		label: 'Most expensive',
 	},
 ];
 
 function WishLists() {
-	const [sortParameter, setSortParameter] = useState(SortOptions.NAME);
+	const [sortParameter, setSortParameter] = useState(SortFields.TITLE_DESC);
 	const { wishListUsers, carts } = useSelector(({ shop }: RootState) => shop);
 	const numberOfCarts = carts.length;
 
@@ -44,7 +48,7 @@ function WishLists() {
 	}, [numberOfCarts]);
 
 	const handleSortSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-		const selectedValue = e.target.value as SortOptions;
+		const selectedValue = e.target.value as SortFields;
 		setSortParameter(prevParameter => (prevParameter !== selectedValue ? selectedValue : prevParameter));
 	};
 

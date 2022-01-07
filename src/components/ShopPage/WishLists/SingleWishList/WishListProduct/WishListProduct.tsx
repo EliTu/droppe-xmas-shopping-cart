@@ -1,6 +1,6 @@
 import { Rating } from 'react-simple-star-rating';
 import { Product } from '../../../../../redux/slices/types';
-import formatPrice from '../../../../../utils/formatPrice';
+import { formatPrice } from '../../../../../utils';
 import { Button } from '../../../../ui/Button';
 import { InfoLabel } from '../../../../ui/InfoLabel';
 import {

@@ -1,4 +1,4 @@
-import WishLists, { SortOptions } from './WishLists';
+import WishLists, { SortFields } from './WishLists';
 
 export { WishLists };
-export type { SortOptions };
+export type { SortFields as SortOptions };
