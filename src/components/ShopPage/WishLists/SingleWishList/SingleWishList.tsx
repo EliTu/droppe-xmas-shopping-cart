@@ -16,13 +16,15 @@ import {
 	HeaderTitleArea,
 	ToggleWishListButton,
 } from './SingleWishList.styled';
+import { SortOptions } from '../WishLists';
 
 interface WishListProps {
 	cartData: CartWithPopulatedProducts;
 	WishListOwner: WishListUser;
+	sortParameter: SortOptions;
 }
 
-function SingleWishList({ WishListOwner, cartData }: WishListProps) {
+function SingleWishList({ WishListOwner, cartData, sortParameter }: WishListProps) {
 	const { date, products } = cartData;
 	const { name, favoriteProductId } = WishListOwner;
 	const [isWishListOpen, setIsWishListOpen] = useState(true);
