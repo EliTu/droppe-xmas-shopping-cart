@@ -30,7 +30,7 @@ export const WishListDate = styled.span`
 `;
 
 export const ToggleWishListButton = styled.span.attrs<{ isWishListOpen: boolean }>(({ isWishListOpen }) => ({
-	children: isWishListOpen ? 'Close List' : 'Open List',
+	children: isWishListOpen ? 'Hide Products' : 'Show Products',
 }))<{ isWishListOpen: boolean }>`
 	color: navy;
 	cursor: pointer;

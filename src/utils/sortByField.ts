@@ -1,9 +1,9 @@
 export type SortDirection = 'asc' | 'desc';
 /**
  * Provide functionality to sort an array of objects by a specific field name and a direction.
- * @param listToSort - the array that will be sorted.
- * @param fieldName - a key in the object of the array to index the comparison value.
- * @param direction - sort direction, @see SortDirection.
+ * @param listToSort the array that will be sorted.
+ * @param fieldName a key in the object of the array to index the comparison value.
+ * @param direction sort direction, @see SortDirection.
  * @returns sorted array.
  * @example sortByField<Product>([{title: 'Cheap chair', price: '2'} , {title: 'Expensive chair', price: 5}], 'price', 'asc') ->
  * [{title: 'Expensive chair', price: 5}, {title: 'Cheap chair', price: '2'}]

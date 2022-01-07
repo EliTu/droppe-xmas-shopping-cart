@@ -9,6 +9,7 @@ import {
 	WishListsContainer,
 	WishListsHeaderContainer,
 	WishListsSectionContainer,
+	WishListsSectionHeader,
 } from './WishLists.styled';
 
 export enum SortFields {
@@ -63,7 +64,7 @@ function WishLists() {
 	const checkboxItems: CheckboxItem[] = useMemo(
 		() => [
 			{
-				label: 'Show favorites only',
+				label: 'Show favorite products only',
 				name: 'favorites',
 				isChecked: showFavoritesOnly,
 				onChange: handleFavoriteCheckboxChange,
@@ -75,7 +76,7 @@ function WishLists() {
 	return (
 		<WishListsSectionContainer>
 			<WishListsHeaderContainer>
-				<h3>{computedTitle}</h3>
+				<WishListsSectionHeader>{computedTitle}</WishListsSectionHeader>
 				<WishListHeaderControlsContainer>
 					<Select options={selectOptions} name="sort" onChange={handleSortSelectChange} />
 					<CheckboxGroup items={checkboxItems} />

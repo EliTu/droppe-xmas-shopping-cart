@@ -5,9 +5,19 @@ export const WishListsSectionContainer = styled.section`
 	width: 50%;
 `;
 
-export const WishListsHeaderContainer = styled(FlexRowDiv)``;
+export const WishListsHeaderContainer = styled(FlexRowDiv)`
+	height: 3rem;
+	align-items: center;
+	justify-content: space-between;
+`;
 
-export const WishListHeaderControlsContainer = styled(FlexRowDiv)``;
+export const WishListsSectionHeader = styled.h3`
+	margin: 0;
+`;
+
+export const WishListHeaderControlsContainer = styled(FlexRowDiv)`
+	margin-inline-end: 1rem;
+`;
 
 export const WishListsContainer = styled(FlexColumnDiv)`
 	width: 100%;

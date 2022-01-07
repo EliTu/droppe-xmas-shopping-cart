@@ -49,6 +49,7 @@ function SingleWishList({ WishListOwner, cartData, sortParameter, showFavoritesO
 	// toggle open/closed list display state
 	const toggleWishList = () => setIsWishListOpen(prevState => !prevState);
 
+	// compute the current state of the products list, if some flags are true, handle them
 	const computedProductList = useMemo(() => {
 		if (showFavoritesOnly) {
 			return products.filter(product => checkIfFavorite(product.id));

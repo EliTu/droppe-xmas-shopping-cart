@@ -46,10 +46,8 @@ export const ProductInfoLabel = styled.span`
 
 export const RightSideContainer = styled(FlexColumnDiv)`
 	width: 6rem;
-	/* border-left: 1px solid #8a8a8abc; */
 	align-items: center;
-	justify-content: flex-end;
-	padding: 0.5rem 0;
+	justify-content: center;
 `;
 
 export const PriceSpan = styled.span<{ $isFavorite: boolean }>`

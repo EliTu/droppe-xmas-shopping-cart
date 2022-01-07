@@ -3,9 +3,10 @@ import { CheckboxItemContainer, CheckboxGroupContainer } from './CheckboxGroup.s
 export interface CheckboxItem {
 	name: string;
 	label: string;
-	onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 	isChecked: boolean;
+	onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 	style?: React.CSSProperties;
+	disabled?: boolean;
 }
 
 interface CheckboxGroupProps {
@@ -16,9 +17,9 @@ interface CheckboxGroupProps {
 function CheckboxGroup({ items, flexDirection = 'row' }: CheckboxGroupProps) {
 	return (
 		<CheckboxGroupContainer $flexDirection={flexDirection}>
-			{items.map(({ label, name, isChecked, onChange }) => (
+			{items.map(({ label, name, isChecked, onChange, disabled }) => (
 				<CheckboxItemContainer key={name}>
-					<input type="checkbox" name={name} checked={isChecked} onChange={onChange} />
+					<input type="checkbox" id={name} name={name} checked={isChecked} onChange={onChange} disabled={disabled} />
 					<label htmlFor={name}>{label}</label>
 				</CheckboxItemContainer>
 			))}
