@@ -1,4 +1,6 @@
+import { useDispatch } from 'react-redux';
 import { Rating } from 'react-simple-star-rating';
+import { addToSelectedProducts } from '../../../../../redux/slices/shopSlice';
 import { Product } from '../../../../../redux/slices/types';
 import { formatPrice } from '../../../../../utils';
 import { Button } from '../../../../ui/Button';
@@ -19,11 +21,15 @@ import {
 interface WishListProductProps {
 	productData: Product;
 	isFavorite: boolean;
+	cartId: number;
 }
 
-function WishListProduct({ productData, isFavorite }: WishListProductProps) {
-	const { title, image, price, rating, description, category } = productData;
+function WishListProduct({ productData, isFavorite, cartId }: WishListProductProps) {
+	const dispatch = useDispatch();
+	const { title, image, price, rating, description, category, id: productId } = productData;
 	const formattedPrice = formatPrice(price);
+
+	const onAddToCartClick = () => dispatch(addToSelectedProducts({ productId, cartId }));
 
 	return (
 		<ProductContainer>
@@ -45,7 +51,7 @@ function WishListProduct({ productData, isFavorite }: WishListProductProps) {
 			</ProductInfoContainer>
 			<RightSideContainer>
 				<PriceSpan $isFavorite={isFavorite}>{formattedPrice}</PriceSpan>
-				<Button>Add to cart</Button>
+				<Button onClick={onAddToCartClick}>Add to cart</Button>
 			</RightSideContainer>
 		</ProductContainer>
 	);

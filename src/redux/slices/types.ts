@@ -39,10 +39,15 @@ export enum Status {
 	ERROR = 'error',
 }
 
+export interface SelectedProductsData {
+	productId: number;
+	cartId: number;
+}
 export interface ShopInitialState {
 	carts: CartWithPopulatedProducts[];
 	wishListUsers: ReadonlyArray<WishListUser>; // in the case of this demo app, use an immutable static list of users, otherwise it shouldn't be ReadonlyArray
 	relevantProducts: Product[];
+	selectedProductsData: SelectedProductsData[];
 	acceptedCarts: CartWithPopulatedProducts[];
 	disregardedCarts: CartWithPopulatedProducts[];
 	status: Status;

@@ -1,4 +1,5 @@
 import { SectionContainer, SectionHeaderContainer, SectionHeader } from '../ShopPage.styled';
+import { SelectedProductsContainer } from './ShoppingCart.styled';
 
 function ShoppingCart() {
 	return (
@@ -6,6 +7,7 @@ function ShoppingCart() {
 			<SectionHeaderContainer>
 				<SectionHeader>Your shopping cart:</SectionHeader>
 			</SectionHeaderContainer>
+			<SelectedProductsContainer></SelectedProductsContainer>
 		</SectionContainer>
 	);
 }

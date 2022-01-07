@@ -1,6 +1,6 @@
 import { CheckboxItemContainer, CheckboxGroupContainer } from './CheckboxGroup.styled';
 
-export interface CheckboxItem {
+export interface CheckboxItem extends React.HTMLProps<HTMLInputElement> {
 	name: string;
 	label: string;
 	isChecked: boolean;

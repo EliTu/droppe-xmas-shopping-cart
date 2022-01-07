@@ -26,8 +26,8 @@ interface WishListProps {
 }
 
 function SingleWishList({ WishListOwner, cartData, sortParameter, showFavoritesOnly }: WishListProps) {
-	const { date, products } = cartData;
-	const { name, favoriteProductId } = WishListOwner;
+	const { date, products, id: cartId } = cartData;
+	const { name, favoriteProductId, associatedCartId } = WishListOwner;
 
 	const [isWishListOpen, setIsWishListOpen] = useState(true);
 
@@ -75,7 +75,12 @@ function SingleWishList({ WishListOwner, cartData, sortParameter, showFavoritesO
 			{isWishListOpen && (
 				<ProductsContainer>
 					{sortedProducts.map(product => (
-						<WishListProduct key={uuid()} productData={product} isFavorite={checkIfFavorite(product.id)} />
+						<WishListProduct
+							key={uuid()}
+							productData={product}
+							isFavorite={checkIfFavorite(product.id)}
+							cartId={cartId}
+						/>
 					))}
 				</ProductsContainer>
 			)}

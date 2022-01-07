@@ -4,6 +4,7 @@ import { FlexColumnDiv, FlexRowDiv } from '../../../../../GlobalStyles.styled';
 export const ProductContainer = styled(FlexRowDiv)`
 	height: auto;
 	border-bottom: 1px solid #8a8a8abc;
+	padding: 0 0.2rem;
 `;
 
 export const ProductImageContainer = styled(FlexRowDiv)`

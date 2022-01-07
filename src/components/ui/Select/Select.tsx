@@ -1,11 +1,11 @@
 import { OuterLabel, SelectContainer, StyledSelect } from './Select.styled';
 
-export interface Option {
+export interface Option extends React.HTMLProps<HTMLOptionElement> {
 	value: string;
 	label: string;
 }
 
-interface SelectProps {
+interface SelectProps extends React.HTMLProps<HTMLSelectElement> {
 	name: string;
 	options: Option[];
 	onChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;

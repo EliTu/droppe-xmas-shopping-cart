@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { CartWithPopulatedProducts, Product, ShopInitialState, Status } from './types';
+import { CartWithPopulatedProducts, Product, SelectedProductsData, ShopInitialState, Status } from './types';
 import { getCartsAsync } from './thunks';
 import { WISH_LIST_USERS } from './constants';
 
@@ -9,6 +9,7 @@ const initialState: ShopInitialState = {
 	acceptedCarts: [],
 	disregardedCarts: [],
 	relevantProducts: [],
+	selectedProductsData: [],
 	status: Status.IDLE,
 	errorMessage: undefined,
 };
@@ -21,8 +22,12 @@ export const shopSlice = createSlice({
 		setRelevantProducts: (state, { payload }: PayloadAction<Product[]>) => {
 			return { ...state, relevantProducts: payload };
 		},
+		addToSelectedProducts: (state, { payload }: PayloadAction<SelectedProductsData>) => {
+			const newProducts: SelectedProductsData[] = [...state.selectedProductsData, payload];
+			return { ...state, selectedProductsData: newProducts };
+		},
 	},
-	// define async actions
+	// async actions
 	extraReducers: ({ addCase }) => {
 		addCase(getCartsAsync.pending, state => {
 			return { ...state, status: Status.LOADING };
@@ -45,6 +50,6 @@ export const shopSlice = createSlice({
 });
 
 // Action creators are generated for each case reducer function
-export const { setRelevantProducts } = shopSlice.actions;
+export const { setRelevantProducts, addToSelectedProducts } = shopSlice.actions;
 
 export default shopSlice.reducer;
