@@ -6,6 +6,7 @@ import { RootState } from '../../../../redux/store';
 import { calculateDiscount, formatPrice } from '../../../../utils';
 import { FavoriteIndicatorBadge } from '../../../ui/FavoriteIndicatorBadge';
 import {
+	DiscountCalculationSpan,
 	PriceSpan,
 	ProductContainer,
 	ProductImage,
@@ -27,28 +28,30 @@ interface SelectedProduct {
 }
 
 function SelectedProduct({ productData, selectionAmount, availableInCarts }: SelectedProduct) {
-	const { title, image, price, rating } = productData;
+	const { title, image, price: originalPrice, rating } = productData;
 	const { wishListUsers } = useSelector(({ shop }: RootState) => shop);
+
+	const isEligibleForDiscount = useMemo(() => selectionAmount > 1, [selectionAmount]);
 
 	// calculate the price according to the amount selected (discount)
 	const { formattedPrice, formattedAmountReduced } = useMemo(() => {
 		// if the it's a single product, escape calculating a discount as it doesn't qualify for a discount
-		if (selectionAmount <= 1) {
+		if (!isEligibleForDiscount) {
 			return {
-				formattedPrice: formatPrice(price),
+				formattedPrice: formatPrice(originalPrice),
 				formattedDiscountAmount: 0,
 			};
 		}
 
-		const originalPrice = price * selectionAmount;
+		const priceByAmountSelected = originalPrice * selectionAmount;
 		const discountPercentage = selectionAmount * 10; // represent the percentage as an integer
-		const { amountAfterDiscount, amountReduced } = calculateDiscount(originalPrice, discountPercentage);
+		const { amountAfterDiscount, amountReduced } = calculateDiscount(priceByAmountSelected, discountPercentage);
 
 		return {
 			formattedPrice: formatPrice(amountAfterDiscount),
 			formattedAmountReduced: formatPrice(amountReduced),
 		};
-	}, [price, selectionAmount]);
+	}, [originalPrice, selectionAmount]);
 
 	// get a list of names of all the users that have requested this product
 	const relevantUserNamesList = useMemo(
@@ -84,9 +87,14 @@ function SelectedProduct({ productData, selectionAmount, availableInCarts }: Sel
 				</RatingContainer>
 				<SelectedProductSummary>
 					<PriceSpan $isFavorite={isFavoriteInAnyList}>
-						{formattedPrice} x {selectionAmount}
+						{formattedPrice}
+						{isEligibleForDiscount && (
+							<DiscountCalculationSpan>
+								({formatPrice(originalPrice)} x {selectionAmount})
+							</DiscountCalculationSpan>
+						)}
 					</PriceSpan>
-					{selectionAmount > 1 && (
+					{isEligibleForDiscount && (
 						<SummaryLabel>{`Discount: ${selectionAmount * 10}% (-${formattedAmountReduced})`}</SummaryLabel>
 					)}
 					<RequestedByContainer>

@@ -51,6 +51,11 @@ export const PriceSpan = styled.span<{ $isFavorite: boolean }>`
 	color: ${props => props.$isFavorite && 'goldenrod'};
 `;
 
+export const DiscountCalculationSpan = styled.span`
+	font-size: 15px;
+	margin-inline-start: 0.2rem;
+`;
+
 export const SelectedProductSummary = styled(FlexRowDiv)`
 	align-items: center;
 	height: 5rem;
