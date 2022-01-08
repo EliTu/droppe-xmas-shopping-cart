@@ -12,6 +12,7 @@ export const CartControlsContainer = styled(FlexRowDiv)`
 
 export const CheckoutContainer = styled(FlexColumnDiv)`
 	width: 30%;
+	justify-content: space-between;
 `;
 
 export const PriceContainer = styled(FlexColumnDiv)`
@@ -29,8 +30,19 @@ export const TotalDiscountSpan = styled.span`
 	font-size: 15px;
 `;
 
-export const ControlsContainer = styled.div<{ $numberOfFrs: number }>`
-	width: 50%;
+export const ControlsContainer = styled(FlexColumnDiv)`
+	width: 60%;
+`;
+
+export const ControlsLabel = styled.span`
+	font-weight: bold;
+	font-size: 18px;
+	margin: 0.5rem 0;
+`;
+
+export const PresetButtonsContainer = styled.div<{ $numberOfFrs: number }>`
+	width: 100%;
+	height: 100%;
 	display: grid;
 	grid-template-columns: ${props => '1fr '.repeat(props.$numberOfFrs)}; // 1fr for each button
 	grid-gap: 1rem;

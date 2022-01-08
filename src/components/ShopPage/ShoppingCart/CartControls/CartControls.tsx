@@ -1,12 +1,14 @@
-import { useMemo } from 'react';
+import { useCallback, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../../../redux/store';
-import { calculateDiscount, formatPrice } from '../../../../utils';
+import { calculateDiscount, formatPrice, getPresetsData, PresetName } from '../../../../utils';
 import { Button, ButtonTypes } from '../../../ui/Button';
 import {
 	CartControlsContainer,
 	CheckoutContainer,
 	ControlsContainer,
+	ControlsLabel,
+	PresetButtonsContainer,
 	PriceContainer,
 	ShoppingIcon,
 	TotalDiscountSpan,
@@ -14,14 +16,13 @@ import {
 } from './CartControls.styled';
 import { faShoppingBag } from '@fortawesome/free-solid-svg-icons';
 import { TargetProductPayload } from '../../../../redux/slices/types';
-import { addToSelectedProducts } from '../../../../redux/slices/shopSlice';
+import { addToSelectedProducts, clearAllSelectedProducts } from '../../../../redux/slices/shopSlice';
 
 type PriceCalculationRecord = Record<'totalPrice' | 'discountAmount', number>;
-
 interface ControlButton {
-	name: string;
+	name: PresetName;
 	label: string;
-	onClick: (data: any) => void;
+	presetData: TargetProductPayload[];
 }
 
 function CartControls() {
@@ -51,61 +52,43 @@ function CartControls() {
 		[selectedProductsRecord]
 	);
 
-	const favorites = carts.reduce<TargetProductPayload[]>((a, c) => {
-		const products = c.products;
-		const associatedUser = wishListUsers.find(user => user.associatedCartId === c.id)!;
-		const favorite = products.find(product => product.id === associatedUser.favoriteProductId)!;
-
-		a.push({ cartId: c.id, productId: favorite.id });
-		return a;
-	}, []);
-
-	const cheapest = carts.reduce<TargetProductPayload[]>((a, c) => {
-		const products = c.products;
-		var cheapest = products.reduce((a, b) => (a.price < b.price ? a : b));
-
-		a.push({ cartId: c.id, productId: cheapest.id });
-		return a;
-	}, []);
-
-	const allProducts = carts.reduce<TargetProductPayload[]>((a, c) => {
-		const products = c.products;
-
-		for (const product of products) {
-			a.push({ cartId: c.id, productId: product.id });
-		}
-		return a;
-	}, []);
-
-	const controlButtons: ControlButton[] = useMemo(
+	const presetsControlButtons: ControlButton[] = useMemo(
 		() => [
 			{
-				name: 'allFavorites',
+				name: PresetName.FAVORITES,
 				label: 'Select all favorite products',
-				onClick: () => dispatch(addToSelectedProducts(favorites)),
+				presetData: getPresetsData(PresetName.FAVORITES, carts, wishListUsers),
 			},
 			{
-				name: 'allCheapest',
+				name: PresetName.CHEAPEST,
 				label: 'Select cheapest products',
-				onClick: () => dispatch(addToSelectedProducts(cheapest)),
+				presetData: getPresetsData(PresetName.CHEAPEST, carts, wishListUsers),
 			},
 			{
-				name: 'allProducts',
+				name: PresetName.ALL_PRODUCTS,
 				label: 'Select all products',
-				onClick: () => dispatch(addToSelectedProducts(allProducts)),
+				presetData: getPresetsData(PresetName.ALL_PRODUCTS, carts, wishListUsers),
 			},
 		],
 		[]
 	);
 
+	const onPresetButtonClick = useCallback((presetData: TargetProductPayload[]) => {
+		dispatch(clearAllSelectedProducts());
+		dispatch(addToSelectedProducts(presetData));
+	}, []);
+
 	return (
 		<CartControlsContainer>
-			<ControlsContainer $numberOfFrs={controlButtons.length}>
-				{controlButtons.map(({ name, label, onClick }) => (
-					<Button type={ButtonTypes.CONFIRM} key={name} onClick={onClick}>
-						{label}
-					</Button>
-				))}
+			<ControlsContainer>
+				<ControlsLabel>Presets available:</ControlsLabel>
+				<PresetButtonsContainer $numberOfFrs={presetsControlButtons.length}>
+					{presetsControlButtons.map(({ name, label, presetData }) => (
+						<Button type={ButtonTypes.CONFIRM} key={name} onClick={() => onPresetButtonClick(presetData)}>
+							{label}
+						</Button>
+					))}
+				</PresetButtonsContainer>
 			</ControlsContainer>
 			<CheckoutContainer>
 				<PriceContainer>

@@ -103,6 +103,9 @@ export const shopSlice = createSlice({
 
 			return { ...state, selectedProductsRecord: newProductRecord };
 		},
+		clearAllSelectedProducts: state => {
+			return { ...state, selectedProductsRecord: {} };
+		},
 	},
 	// async actions
 	extraReducers: ({ addCase }) => {
@@ -127,6 +130,7 @@ export const shopSlice = createSlice({
 });
 
 // Action creators are generated for each case reducer function
-export const { setRelevantProducts, addToSelectedProducts, removeSelectedProducts } = shopSlice.actions;
+export const { setRelevantProducts, addToSelectedProducts, removeSelectedProducts, clearAllSelectedProducts } =
+	shopSlice.actions;
 
 export default shopSlice.reducer;
