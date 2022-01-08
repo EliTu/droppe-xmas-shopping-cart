@@ -3,6 +3,7 @@ import { useSelector } from 'react-redux';
 import { Product } from '../../../redux/slices/types';
 import { RootState } from '../../../redux/store';
 import { SectionContainer, SectionHeaderContainer, SectionHeader } from '../ShopPage.styled';
+import { CartControls } from './CartControls';
 import { SelectedProduct } from './SelectedProduct';
 import { SelectedProductsContainer } from './ShoppingCart.styled';
 
@@ -48,7 +49,7 @@ function ShoppingCart() {
 	);
 
 	return (
-		<SectionContainer $heightInVh={70}>
+		<SectionContainer>
 			<SectionHeaderContainer>
 				<SectionHeader>Your shopping cart:</SectionHeader>
 			</SectionHeaderContainer>
@@ -65,6 +66,7 @@ function ShoppingCart() {
 					);
 				})}
 			</SelectedProductsContainer>
+			<CartControls></CartControls>
 		</SectionContainer>
 	);
 }
