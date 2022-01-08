@@ -17,7 +17,11 @@ import {
 } from './CartControls.styled';
 import { faShoppingBag } from '@fortawesome/free-solid-svg-icons';
 import { TargetProductPayload } from '../../../../redux/slices/types';
-import { addToSelectedProducts, clearAllSelectedProducts } from '../../../../redux/slices/shopSlice';
+import {
+	addToSelectedProducts,
+	aggregateCheckoutCarts,
+	clearAllSelectedProducts,
+} from '../../../../redux/slices/shopSlice';
 
 type PriceCalculationRecord = Record<'totalPrice' | 'discountAmount', number>;
 interface ControlButton {
@@ -82,7 +86,10 @@ function CartControls() {
 		dispatch(addToSelectedProducts(presetData)); // pass the preset data
 	}, []);
 
-	const onCheckoutClick = () => navigate('/checkout', { replace: true });
+	const onCheckoutClick = () => {
+		dispatch(aggregateCheckoutCarts());
+		navigate('/checkout', { replace: true });
+	};
 
 	return (
 		<CartControlsContainer>

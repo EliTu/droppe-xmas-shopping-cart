@@ -50,13 +50,24 @@ export interface TargetProductPayload {
 	cartId: number;
 }
 
+export interface CheckoutProductData {
+	id: number;
+	amount: number;
+}
+
+export interface CheckoutCarts {
+	id: number;
+	date: Date;
+	acceptedProducts: CheckoutProductData[];
+	disregardedProducts: CheckoutProductData[];
+}
+
 export interface ShopInitialState {
 	carts: CartWithPopulatedProducts[];
 	wishListUsers: ReadonlyArray<WishListUser>; // in the case of this demo app, use an immutable static list of users, otherwise it shouldn't be ReadonlyArray
 	relevantProducts: Product[];
 	selectedProductsRecord: Record<number, SelectedProductsData>;
-	acceptedCarts: CartWithPopulatedProducts[];
-	disregardedCarts: CartWithPopulatedProducts[];
+	checkoutCarts: CheckoutCarts[];
 	status: Status;
 	errorMessage: string | undefined;
 }

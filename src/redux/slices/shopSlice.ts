@@ -1,6 +1,8 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import {
 	CartWithPopulatedProducts,
+	CheckoutCarts,
+	CheckoutProductData,
 	Product,
 	SelectedProductsData,
 	ShopInitialState,
@@ -13,8 +15,7 @@ import { WISH_LIST_USERS } from './constants';
 const initialState: ShopInitialState = {
 	wishListUsers: WISH_LIST_USERS,
 	carts: [],
-	acceptedCarts: [],
-	disregardedCarts: [],
+	checkoutCarts: [],
 	relevantProducts: [],
 	selectedProductsRecord: {},
 	status: Status.IDLE,
@@ -106,6 +107,34 @@ export const shopSlice = createSlice({
 		clearAllSelectedProducts: state => {
 			return { ...state, selectedProductsRecord: {} };
 		},
+		aggregateCheckoutCarts: state => {
+			const { carts, selectedProductsRecord } = state;
+			const newCarts: CheckoutCarts[] = carts.map(cart => {
+				const cartProducts = cart.products;
+				let acceptedProducts: CheckoutProductData[] = [];
+				let disregardedProducts: CheckoutProductData[] = [];
+
+				for (const product of cartProducts) {
+					if (selectedProductsRecord[product.id]) {
+						acceptedProducts = [
+							...acceptedProducts,
+							{ id: product.id, amount: selectedProductsRecord[product.id].amount },
+						];
+					} else {
+						disregardedProducts = [...disregardedProducts, { id: product.id, amount: 0 }];
+					}
+				}
+
+				return {
+					id: cart.id,
+					date: new Date(),
+					acceptedProducts,
+					disregardedProducts,
+				};
+			});
+
+			return { ...state, checkoutCarts: newCarts };
+		},
 	},
 	// async actions
 	extraReducers: ({ addCase }) => {
@@ -130,7 +159,12 @@ export const shopSlice = createSlice({
 });
 
 // Action creators are generated for each case reducer function
-export const { setRelevantProducts, addToSelectedProducts, removeSelectedProducts, clearAllSelectedProducts } =
-	shopSlice.actions;
+export const {
+	setRelevantProducts,
+	addToSelectedProducts,
+	removeSelectedProducts,
+	clearAllSelectedProducts,
+	aggregateCheckoutCarts,
+} = shopSlice.actions;
 
 export default shopSlice.reducer;

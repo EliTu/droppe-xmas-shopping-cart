@@ -13,4 +13,5 @@ export const NoProductsAvailable = styled(FlexColumnDiv)`
 	height: 100%;
 	justify-content: center;
 	align-items: center;
+	user-select: none;
 `;
