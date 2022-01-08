@@ -1,6 +1,6 @@
 import { useCallback, useMemo } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '../../../../redux/store';
+import { useSelector } from 'react-redux';
+import { RootState, useAppDispatch } from '../../../../redux/store';
 import { calculateDiscount, formatPrice, getPresetsData, PresetName } from '../../../../utils';
 import { Button, ButtonTypes } from '../../../ui/Button';
 import {
@@ -27,7 +27,7 @@ interface ControlButton {
 
 function CartControls() {
 	const { selectedProductsRecord, carts, wishListUsers } = useSelector(({ shop }: RootState) => shop);
-	const dispatch = useDispatch();
+	const dispatch = useAppDispatch();
 
 	const selectedProductsValues = Object.values(selectedProductsRecord);
 	const { totalPrice, discountAmount } = useMemo(
@@ -52,24 +52,24 @@ function CartControls() {
 		[selectedProductsRecord]
 	);
 
-	const predefinedPresetsDataFn = (presetName: PresetName) => getPresetsData(presetName, carts, wishListUsers);
+	const predefinedGetPresetDataFn = (presetName: PresetName) => getPresetsData(presetName, carts, wishListUsers);
 
 	const presetsControlButtons: ControlButton[] = useMemo(
 		() => [
 			{
 				name: PresetName.FAVORITES,
 				label: 'Select all favorite products',
-				presetData: predefinedPresetsDataFn(PresetName.FAVORITES),
+				presetData: predefinedGetPresetDataFn(PresetName.FAVORITES),
 			},
 			{
 				name: PresetName.CHEAPEST,
 				label: 'Select cheapest products',
-				presetData: predefinedPresetsDataFn(PresetName.CHEAPEST),
+				presetData: predefinedGetPresetDataFn(PresetName.CHEAPEST),
 			},
 			{
 				name: PresetName.ALL_PRODUCTS,
 				label: 'Select all products',
-				presetData: predefinedPresetsDataFn(PresetName.ALL_PRODUCTS),
+				presetData: predefinedGetPresetDataFn(PresetName.ALL_PRODUCTS),
 			},
 		],
 		[]

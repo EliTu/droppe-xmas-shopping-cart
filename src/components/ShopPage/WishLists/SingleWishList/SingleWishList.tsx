@@ -15,7 +15,7 @@ import {
 	HeaderTitleArea,
 } from './SingleWishList.styled';
 import { SortFields } from '../WishLists';
-import { ToggleIndicator } from '../../../ui/ToggleIndicator';
+import { BareButton } from '../../../ui/BareButton';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../redux/store';
 
@@ -73,7 +73,7 @@ function SingleWishList({ WishListOwner, cartData, sortParameter, showFavoritesO
 					<WishListTitle>{title}</WishListTitle>
 					<WishListDate>{formattedDate}</WishListDate>
 				</HeaderTitleArea>
-				<ToggleIndicator isOpen={isWishListOpen} toggleTargetLabel="products" onClick={toggleWishList} />
+				<BareButton onClick={toggleWishList}>{isWishListOpen ? `Hide products` : `Show products`}</BareButton>
 			</WishListHeader>
 			{isWishListOpen && (
 				<ProductsContainer>

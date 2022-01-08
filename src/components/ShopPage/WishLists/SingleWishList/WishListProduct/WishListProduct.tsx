@@ -1,8 +1,8 @@
 import { useCallback, useMemo, memo } from 'react';
-import { useDispatch } from 'react-redux';
 import { Rating } from 'react-simple-star-rating';
 import { addToSelectedProducts, removeSelectedProducts } from '../../../../../redux/slices/shopSlice';
 import { Product, TargetProductPayload } from '../../../../../redux/slices/types';
+import { useAppDispatch } from '../../../../../redux/store';
 import { formatPrice } from '../../../../../utils';
 import { Button, ButtonTypes } from '../../../../ui/Button';
 import { FavoriteIndicatorBadge } from '../../../../ui/FavoriteIndicatorBadge';
@@ -27,7 +27,7 @@ interface WishListProductProps {
 }
 
 function WishListProduct({ productData, isFavorite, cartId, isSelected }: WishListProductProps) {
-	const dispatch = useDispatch();
+	const dispatch = useAppDispatch();
 
 	const { title, image, price, rating, description, category, id: productId } = productData;
 	const formattedPrice = formatPrice(price);
