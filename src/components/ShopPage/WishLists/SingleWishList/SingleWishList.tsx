@@ -1,5 +1,4 @@
-import { useMemo, useState, memo } from 'react';
-import { v4 as uuid } from 'uuid';
+import { useMemo, useState } from 'react';
 import format from 'date-fns/format';
 import { CartWithPopulatedProducts, Product, WishListUser } from '../../../../redux/slices/types';
 import { formatPrice, sortByField, SortDirection } from '../../../../utils';
@@ -17,6 +16,8 @@ import {
 } from './SingleWishList.styled';
 import { SortFields } from '../WishLists';
 import { ToggleIndicator } from '../../../ui/ToggleIndicator';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../../../redux/store';
 
 interface WishListProps {
 	cartData: CartWithPopulatedProducts;
@@ -28,6 +29,8 @@ interface WishListProps {
 function SingleWishList({ WishListOwner, cartData, sortParameter, showFavoritesOnly }: WishListProps) {
 	const { date, products, id: cartId } = cartData;
 	const { name, favoriteProductId } = WishListOwner;
+
+	const { selectedProductsData } = useSelector(({ shop }: RootState) => shop);
 
 	const [isWishListOpen, setIsWishListOpen] = useState(true);
 
@@ -74,14 +77,20 @@ function SingleWishList({ WishListOwner, cartData, sortParameter, showFavoritesO
 			</WishListHeader>
 			{isWishListOpen && (
 				<ProductsContainer>
-					{sortedProducts.map(product => (
-						<WishListProduct
-							key={uuid()}
-							productData={product}
-							isFavorite={checkIfFavorite(product.id)}
-							cartId={cartId}
-						/>
-					))}
+					{sortedProducts.map((product, i) => {
+						const isSelected = selectedProductsData.find(
+							({ cartId: selectedCartId, productId }) => selectedCartId === cartId && productId === product.id
+						);
+						return (
+							<WishListProduct
+								key={`${product.id}_${i}`}
+								productData={product}
+								isFavorite={checkIfFavorite(product.id)}
+								cartId={cartId}
+								isSelected={Boolean(isSelected)}
+							/>
+						);
+					})}
 				</ProductsContainer>
 			)}
 			<WishListFooter>
@@ -96,4 +105,4 @@ function SingleWishList({ WishListOwner, cartData, sortParameter, showFavoritesO
 	);
 }
 
-export default memo(SingleWishList);
+export default SingleWishList;

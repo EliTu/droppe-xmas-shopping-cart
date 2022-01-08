@@ -26,6 +26,17 @@ export const shopSlice = createSlice({
 			const newProducts: SelectedProductsData[] = [...state.selectedProductsData, payload];
 			return { ...state, selectedProductsData: newProducts };
 		},
+		removeSelectedProducts: (state, { payload }: PayloadAction<SelectedProductsData>) => {
+			const newProducts: SelectedProductsData[] = state.selectedProductsData.filter(({ cartId, productId }) => {
+				// check for the relevant cart
+				if (cartId === payload.cartId) {
+					// then remove the relevant product, otherwise continue
+					return productId !== payload.productId;
+				}
+				return true;
+			});
+			return { ...state, selectedProductsData: newProducts };
+		},
 	},
 	// async actions
 	extraReducers: ({ addCase }) => {
@@ -50,6 +61,6 @@ export const shopSlice = createSlice({
 });
 
 // Action creators are generated for each case reducer function
-export const { setRelevantProducts, addToSelectedProducts } = shopSlice.actions;
+export const { setRelevantProducts, addToSelectedProducts, removeSelectedProducts } = shopSlice.actions;
 
 export default shopSlice.reducer;

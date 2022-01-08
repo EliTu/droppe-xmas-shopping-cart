@@ -1,6 +1,7 @@
+import { useCallback, useMemo, memo } from 'react';
 import { useDispatch } from 'react-redux';
 import { Rating } from 'react-simple-star-rating';
-import { addToSelectedProducts } from '../../../../../redux/slices/shopSlice';
+import { addToSelectedProducts, removeSelectedProducts } from '../../../../../redux/slices/shopSlice';
 import { Product } from '../../../../../redux/slices/types';
 import { formatPrice } from '../../../../../utils';
 import { Button } from '../../../../ui/Button';
@@ -22,14 +23,24 @@ interface WishListProductProps {
 	productData: Product;
 	isFavorite: boolean;
 	cartId: number;
+	isSelected: boolean;
 }
 
-function WishListProduct({ productData, isFavorite, cartId }: WishListProductProps) {
+function WishListProduct({ productData, isFavorite, cartId, isSelected }: WishListProductProps) {
 	const dispatch = useDispatch();
+
 	const { title, image, price, rating, description, category, id: productId } = productData;
 	const formattedPrice = formatPrice(price);
 
-	const onAddToCartClick = () => dispatch(addToSelectedProducts({ productId, cartId }));
+	const onButtonClick = useCallback(() => {
+		const payload = { productId, cartId };
+		if (isSelected) {
+			return dispatch(removeSelectedProducts(payload));
+		}
+		return dispatch(addToSelectedProducts(payload));
+	}, [isSelected]);
+
+	const buttonLabel = useMemo(() => (!isSelected ? 'Add to cart' : 'Remove from cart'), [isSelected]);
 
 	return (
 		<ProductContainer>
@@ -51,10 +62,10 @@ function WishListProduct({ productData, isFavorite, cartId }: WishListProductPro
 			</ProductInfoContainer>
 			<RightSideContainer>
 				<PriceSpan $isFavorite={isFavorite}>{formattedPrice}</PriceSpan>
-				<Button onClick={onAddToCartClick}>Add to cart</Button>
+				<Button onClick={onButtonClick}>{buttonLabel}</Button>
 			</RightSideContainer>
 		</ProductContainer>
 	);
 }
 
-export default WishListProduct;
+export default memo(WishListProduct);
