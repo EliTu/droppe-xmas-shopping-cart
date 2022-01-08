@@ -11,11 +11,12 @@ interface Button extends React.HTMLProps<HTMLButtonElement> {
 	children: ReactNode;
 	disabled?: boolean;
 	type?: ButtonTypes;
+	fontSize?: number;
 }
 
-function Button({ children, disabled, onClick, type = ButtonTypes.DEFAULT }: Button) {
+function Button({ children, disabled, onClick, type = ButtonTypes.DEFAULT, fontSize = 13 }: Button) {
 	return (
-		<StyledButton onClick={onClick} disabled={disabled} $type={type}>
+		<StyledButton onClick={onClick} disabled={Boolean(disabled)} $type={type} $fontSize={fontSize}>
 			{children}
 		</StyledButton>
 	);

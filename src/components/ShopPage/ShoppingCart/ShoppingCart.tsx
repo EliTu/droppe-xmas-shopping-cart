@@ -1,6 +1,4 @@
-import { useMemo } from 'react';
 import { useSelector } from 'react-redux';
-import { Product } from '../../../redux/slices/types';
 import { RootState } from '../../../redux/store';
 import { SectionContainer, SectionHeaderContainer, SectionHeader } from '../ShopPage.styled';
 import { CartControls } from './CartControls';
@@ -9,8 +7,6 @@ import { SelectedProductsContainer } from './ShoppingCart.styled';
 
 function ShoppingCart() {
 	const { selectedProductsRecord } = useSelector(({ shop }: RootState) => shop);
-	console.log(selectedProductsRecord);
-
 	return (
 		<SectionContainer>
 			<SectionHeaderContainer>

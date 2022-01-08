@@ -49,20 +49,25 @@ const TYPE_STYLE_MAP: Record<ButtonTypes, TypeStyle> = {
 	},
 };
 
-export const StyledButton = styled.button<{ $type: ButtonTypes }>`
+export const StyledButton = styled.button<{ $type: ButtonTypes; $fontSize: number; disabled: boolean }>`
 	background-color: ${props => TYPE_STYLE_MAP[props.$type].background};
 	color: ${props => TYPE_STYLE_MAP[props.$type].color};
 	width: 90%;
-	height: 2.5rem;
-	cursor: pointer;
-	font-size: 13px;
+	min-height: 2.5rem;
+	cursor: ${props => (!props.disabled ? 'pointer' : 'unset')};
+	font-size: ${props => props.$fontSize}px;
 	transition: all 0.2s ease;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	pointer-events: ${props => (props.disabled ? 'none' : 'unset')};
+	opacity: ${props => (props.disabled ? '0.2' : 'unset')};
 
 	&:hover {
-		background-color: ${props => TYPE_STYLE_MAP[props.$type].hover.background};
+		background-color: ${props => !props.disabled && TYPE_STYLE_MAP[props.$type].hover.background};
 	}
 
 	&:active {
-		background-color: ${props => TYPE_STYLE_MAP[props.$type].active.background};
+		background-color: ${props => !props.disabled && TYPE_STYLE_MAP[props.$type].active.background};
 	}
 `;

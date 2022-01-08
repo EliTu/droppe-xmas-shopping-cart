@@ -1,7 +1,6 @@
 import { useMemo } from 'react';
 import { useSelector } from 'react-redux';
 import { Rating } from 'react-simple-star-rating';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Product } from '../../../../redux/slices/types';
 import { RootState } from '../../../../redux/store';
 import { calculateDiscount, formatPrice } from '../../../../utils';
@@ -22,7 +21,6 @@ import {
 	SummaryLabel,
 	UserNameSpan,
 } from './SelectedProduct.styled';
-import { faCheck, faTimes } from '@fortawesome/free-solid-svg-icons';
 
 interface SelectedProduct {
 	productData: Product;
