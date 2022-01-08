@@ -52,30 +52,32 @@ function CartControls() {
 		[selectedProductsRecord]
 	);
 
+	const predefinedPresetsDataFn = (presetName: PresetName) => getPresetsData(presetName, carts, wishListUsers);
+
 	const presetsControlButtons: ControlButton[] = useMemo(
 		() => [
 			{
 				name: PresetName.FAVORITES,
 				label: 'Select all favorite products',
-				presetData: getPresetsData(PresetName.FAVORITES, carts, wishListUsers),
+				presetData: predefinedPresetsDataFn(PresetName.FAVORITES),
 			},
 			{
 				name: PresetName.CHEAPEST,
 				label: 'Select cheapest products',
-				presetData: getPresetsData(PresetName.CHEAPEST, carts, wishListUsers),
+				presetData: predefinedPresetsDataFn(PresetName.CHEAPEST),
 			},
 			{
 				name: PresetName.ALL_PRODUCTS,
 				label: 'Select all products',
-				presetData: getPresetsData(PresetName.ALL_PRODUCTS, carts, wishListUsers),
+				presetData: predefinedPresetsDataFn(PresetName.ALL_PRODUCTS),
 			},
 		],
 		[]
 	);
 
 	const onPresetButtonClick = useCallback((presetData: TargetProductPayload[]) => {
-		dispatch(clearAllSelectedProducts());
-		dispatch(addToSelectedProducts(presetData));
+		dispatch(clearAllSelectedProducts()); // first remove all previous cart items
+		dispatch(addToSelectedProducts(presetData)); // pass the preset data
 	}, []);
 
 	return (

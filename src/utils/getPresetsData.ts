@@ -6,6 +6,13 @@ export enum PresetName {
 	ALL_PRODUCTS = 'allProducts',
 }
 
+/**
+ * Get all the relevant product data for the presets, defined by the preset name
+ * @param presetName The name of the required preset
+ * @param carts The carts data
+ * @param wishListUsers The users data
+ * @returns Selected products data to dispatch
+ */
 function getPresetsData(
 	presetName: PresetName,
 	carts: CartWithPopulatedProducts[],
