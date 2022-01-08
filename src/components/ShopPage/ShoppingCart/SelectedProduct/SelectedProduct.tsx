@@ -1,6 +1,7 @@
 import { useMemo } from 'react';
 import { useSelector } from 'react-redux';
 import { Rating } from 'react-simple-star-rating';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Product } from '../../../../redux/slices/types';
 import { RootState } from '../../../../redux/store';
 import { calculateDiscount, formatPrice } from '../../../../utils';
@@ -13,6 +14,7 @@ import {
 	ProductImageContainer,
 	ProductInfoContainer,
 	ProductTitle,
+	PurchasedForUserIndicator,
 	RateCount,
 	RatingContainer,
 	RequestedByContainer,
@@ -20,14 +22,16 @@ import {
 	SummaryLabel,
 	UserNameSpan,
 } from './SelectedProduct.styled';
+import { faCheck, faTimes } from '@fortawesome/free-solid-svg-icons';
 
 interface SelectedProduct {
 	productData: Product;
 	selectionAmount: number;
 	availableInCarts: number[];
+	originCartIds: number[];
 }
 
-function SelectedProduct({ productData, selectionAmount, availableInCarts }: SelectedProduct) {
+function SelectedProduct({ productData, selectionAmount, availableInCarts, originCartIds }: SelectedProduct) {
 	const { title, image, price: originalPrice, rating } = productData;
 	const { wishListUsers } = useSelector(({ shop }: RootState) => shop);
 
@@ -54,11 +58,8 @@ function SelectedProduct({ productData, selectionAmount, availableInCarts }: Sel
 	}, [originalPrice, selectionAmount]);
 
 	// get a list of names of all the users that have requested this product
-	const relevantUserNamesList = useMemo(
-		() =>
-			wishListUsers
-				.filter(({ associatedCartId }) => availableInCarts.includes(associatedCartId))
-				.map(({ name }) => name),
+	const relevantUserList = useMemo(
+		() => wishListUsers.filter(({ associatedCartId }) => availableInCarts.includes(associatedCartId)),
 		[availableInCarts, wishListUsers]
 	);
 
@@ -69,6 +70,8 @@ function SelectedProduct({ productData, selectionAmount, availableInCarts }: Sel
 	);
 
 	const isFavoriteInAnyList = Boolean(favoriteInList.length);
+
+	console.log({ productData, availableInCarts, wishListUsers, originCartIds });
 
 	return (
 		<ProductContainer>
@@ -98,12 +101,14 @@ function SelectedProduct({ productData, selectionAmount, availableInCarts }: Sel
 						<SummaryLabel>{`Discount: ${selectionAmount * 10}% (-${formattedAmountReduced})`}</SummaryLabel>
 					)}
 					<RequestedByContainer>
-						<SummaryLabel>Requested by:</SummaryLabel>
-						{relevantUserNamesList.map(name => {
+						<SummaryLabel>Available for:</SummaryLabel>
+						{relevantUserList.map(({ name, associatedCartId }) => {
+							const isPurchasedForUser = originCartIds.includes(associatedCartId);
 							const isFavorite = favoriteInList.map(({ name }) => name).includes(name);
 							return (
 								<UserNameSpan $isFavorite={isFavorite} key={name}>
 									{name}
+									<PurchasedForUserIndicator icon isPurchased={isPurchasedForUser} />
 								</UserNameSpan>
 							);
 						})}

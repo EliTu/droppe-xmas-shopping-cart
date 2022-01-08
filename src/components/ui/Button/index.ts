@@ -1,3 +1,3 @@
-import Button from './Button';
+import Button, { ButtonTypes } from './Button';
 
-export { Button };
+export { Button, ButtonTypes };

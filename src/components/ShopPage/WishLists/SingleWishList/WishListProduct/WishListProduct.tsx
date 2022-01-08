@@ -4,7 +4,7 @@ import { Rating } from 'react-simple-star-rating';
 import { addToSelectedProducts, removeSelectedProducts } from '../../../../../redux/slices/shopSlice';
 import { Product } from '../../../../../redux/slices/types';
 import { formatPrice } from '../../../../../utils';
-import { Button } from '../../../../ui/Button';
+import { Button, ButtonTypes } from '../../../../ui/Button';
 import { FavoriteIndicatorBadge } from '../../../../ui/FavoriteIndicatorBadge';
 import { InfoLabel } from '../../../../ui/InfoLabel';
 import {
@@ -62,7 +62,9 @@ function WishListProduct({ productData, isFavorite, cartId, isSelected }: WishLi
 			</ProductInfoContainer>
 			<RightSideContainer>
 				<PriceSpan $isFavorite={isFavorite}>{formattedPrice}</PriceSpan>
-				<Button onClick={onButtonClick}>{buttonLabel}</Button>
+				<Button type={!isSelected ? ButtonTypes.CONFIRM : ButtonTypes.DANGER} onClick={onButtonClick}>
+					{buttonLabel}
+				</Button>
 			</RightSideContainer>
 		</ProductContainer>
 	);

@@ -10,6 +10,7 @@ interface SelectedProductData {
 	productData: Product;
 	amount: number;
 	availableInCarts: number[];
+	originCartIds: number[];
 }
 
 function ShoppingCart() {
@@ -19,6 +20,7 @@ function ShoppingCart() {
 		() =>
 			selectedProductsData.reduce<Record<number, SelectedProductData>>((selectedProductsMap, currentSelectedData) => {
 				const productId: number = currentSelectedData.productId;
+				const originCartId: number = currentSelectedData.cartId;
 
 				// if a product already exists in the map, increment his amount
 				if (selectedProductsMap[currentSelectedData.productId]) {
@@ -27,6 +29,7 @@ function ShoppingCart() {
 						[productId]: {
 							...selectedProductsMap[productId],
 							amount: selectedProductsMap[productId].amount + 1,
+							originCartIds: [...selectedProductsMap[productId].originCartIds, originCartId],
 						},
 					};
 				}
@@ -38,7 +41,7 @@ function ShoppingCart() {
 
 				return {
 					...selectedProductsMap,
-					[productId]: { productData, availableInCarts, amount: 1 },
+					[productId]: { productData, availableInCarts, originCartIds: [originCartId], amount: 1 },
 				};
 			}, {}),
 		[selectedProductsData, relevantProducts, carts]
@@ -50,13 +53,14 @@ function ShoppingCart() {
 				<SectionHeader>Your shopping cart:</SectionHeader>
 			</SectionHeaderContainer>
 			<SelectedProductsContainer>
-				{Object.values(computedProductsList).map(({ productData, amount, availableInCarts }) => {
+				{Object.values(computedProductsList).map(({ productData, amount, availableInCarts, originCartIds }) => {
 					return (
 						<SelectedProduct
 							key={productData.id}
 							productData={productData}
 							availableInCarts={availableInCarts}
 							selectionAmount={amount}
+							originCartIds={originCartIds}
 						/>
 					);
 				})}

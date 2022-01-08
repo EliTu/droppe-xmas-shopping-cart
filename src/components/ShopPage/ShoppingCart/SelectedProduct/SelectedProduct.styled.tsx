@@ -1,5 +1,7 @@
 import styled from 'styled-components';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { BeforePseudoDivider, FlexColumnDiv, FlexRowDiv } from '../../../../GlobalStyles.styled';
+import { faCheck, faTimes } from '@fortawesome/free-solid-svg-icons';
 
 export const ProductContainer = styled(FlexRowDiv)`
 	height: 7rem;
@@ -78,7 +80,19 @@ export const UserNameSpan = styled.span<{ $isFavorite: boolean }>`
 	/* set a comma after each name except for the last one */
 	&:not(:last-child) {
 		&::after {
-			content: ',';
+			content: ' - ';
+			color: initial;
 		}
 	}
+`;
+
+// we pass the icon?:any type to satisfy the TS compiler, as it can't correctly infer that this styled FontAwesomeIcon component already
+// pass icon internally
+export const PurchasedForUserIndicator = styled(FontAwesomeIcon).attrs<{ isPurchased: boolean; icon?: any }>(
+	({ isPurchased }) => ({
+		icon: isPurchased ? faCheck : faTimes,
+	})
+)<{ isPurchased: boolean; icon?: any }>`
+	color: ${props => (props.isPurchased ? 'dodgerblue' : 'crimson')};
+	margin-inline-start: 0.2rem;
 `;
