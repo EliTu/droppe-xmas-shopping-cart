@@ -53,7 +53,7 @@ export const PriceSpan = styled.span<{ $isFavorite: boolean }>`
 	color: ${props => props.$isFavorite && 'goldenrod'};
 `;
 
-export const DiscountCalculationSpan = styled.span`
+export const PriceCalculationSpan = styled.span`
 	font-size: 15px;
 	margin-inline-start: 0.2rem;
 `;
@@ -63,10 +63,11 @@ export const SelectedProductSummary = styled(FlexRowDiv)`
 	height: 5rem;
 `;
 
-export const SummaryLabel = styled.span`
+export const SummaryLabel = styled.span<{ $hideDivider?: boolean }>`
 	font-weight: bold;
 	font-size: 13px;
-	${BeforePseudoDivider}
+
+	${props => !props.$hideDivider && BeforePseudoDivider}
 `;
 
 export const RequestedByContainer = styled(FlexRowDiv)`
@@ -88,11 +89,11 @@ export const UserNameSpan = styled.span<{ $isFavorite: boolean }>`
 
 // we pass the icon?:any type to satisfy the TS compiler, as it can't correctly infer that this styled FontAwesomeIcon component already
 // pass icon internally
-export const PurchasedForUserIndicator = styled(FontAwesomeIcon).attrs<{ isPurchased: boolean; icon?: any }>(
-	({ isPurchased }) => ({
-		icon: isPurchased ? faCheck : faTimes,
+export const PurchasedForUserIndicator = styled(FontAwesomeIcon).attrs<{ $isPurchased: boolean; icon?: any }>(
+	({ $isPurchased }) => ({
+		icon: $isPurchased ? faCheck : faTimes,
 	})
-)<{ isPurchased: boolean; icon?: any }>`
-	color: ${props => (props.isPurchased ? 'dodgerblue' : 'crimson')};
+)<{ $isPurchased: boolean; icon?: any }>`
+	color: ${props => (props.$isPurchased ? 'dodgerblue' : 'crimson')};
 	margin-inline-start: 0.2rem;
 `;

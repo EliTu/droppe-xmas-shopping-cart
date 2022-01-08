@@ -7,7 +7,7 @@ import { RootState } from '../../../../redux/store';
 import { calculateDiscount, formatPrice } from '../../../../utils';
 import { FavoriteIndicatorBadge } from '../../../ui/FavoriteIndicatorBadge';
 import {
-	DiscountCalculationSpan,
+	PriceCalculationSpan,
 	PriceSpan,
 	ProductContainer,
 	ProductImage,
@@ -71,8 +71,6 @@ function SelectedProduct({ productData, selectionAmount, availableInCarts, origi
 
 	const isFavoriteInAnyList = Boolean(favoriteInList.length);
 
-	console.log({ productData, availableInCarts, wishListUsers, originCartIds });
-
 	return (
 		<ProductContainer>
 			<ProductImageContainer>
@@ -92,28 +90,28 @@ function SelectedProduct({ productData, selectionAmount, availableInCarts, origi
 					<PriceSpan $isFavorite={isFavoriteInAnyList}>
 						{formattedPrice}
 						{isEligibleForDiscount && (
-							<DiscountCalculationSpan>
+							<PriceCalculationSpan>
 								({formatPrice(originalPrice)} x {selectionAmount})
-							</DiscountCalculationSpan>
+							</PriceCalculationSpan>
 						)}
 					</PriceSpan>
 					{isEligibleForDiscount && (
 						<SummaryLabel>{`Discount: ${selectionAmount * 10}% (-${formattedAmountReduced})`}</SummaryLabel>
 					)}
-					<RequestedByContainer>
-						<SummaryLabel>Available for:</SummaryLabel>
-						{relevantUserList.map(({ name, associatedCartId }) => {
-							const isPurchasedForUser = originCartIds.includes(associatedCartId);
-							const isFavorite = favoriteInList.map(({ name }) => name).includes(name);
-							return (
-								<UserNameSpan $isFavorite={isFavorite} key={name}>
-									{name}
-									<PurchasedForUserIndicator icon isPurchased={isPurchasedForUser} />
-								</UserNameSpan>
-							);
-						})}
-					</RequestedByContainer>
 				</SelectedProductSummary>
+				<RequestedByContainer>
+					<SummaryLabel $hideDivider>Available for:</SummaryLabel>
+					{relevantUserList.map(({ name, associatedCartId }) => {
+						const isPurchasedForUser = originCartIds.includes(associatedCartId);
+						const isFavorite = favoriteInList.map(({ name }) => name).includes(name);
+						return (
+							<UserNameSpan $isFavorite={isFavorite} key={name}>
+								{name}
+								<PurchasedForUserIndicator icon $isPurchased={isPurchasedForUser} />
+							</UserNameSpan>
+						);
+					})}
+				</RequestedByContainer>
 			</ProductInfoContainer>
 		</ProductContainer>
 	);

@@ -1,6 +1,10 @@
 import styled from 'styled-components';
-import { ButtonTypes } from './Button';
 
+enum ButtonTypes {
+	DEFAULT = 'default',
+	DANGER = 'danger',
+	CONFIRM = 'confirm',
+}
 interface TypeStyle {
 	background: string;
 	color: string;

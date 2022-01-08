@@ -36,4 +36,13 @@ export const BeforePseudoDivider = css`
 	}
 `;
 
+export const AfterPseudoDivider = css`
+	&::after {
+		content: '';
+		border: 0.5px solid black;
+		opacity: 0.5;
+		margin: 0 0.5rem;
+	}
+`;
+
 export default GlobalStyles;
