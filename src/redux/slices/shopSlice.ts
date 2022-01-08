@@ -29,32 +29,52 @@ export const shopSlice = createSlice({
 		setRelevantProducts: (state, { payload }: PayloadAction<Product[]>) => {
 			return { ...state, relevantProducts: payload };
 		},
-		addToSelectedProducts: (state, { payload }: PayloadAction<TargetProductPayload>) => {
+		addToSelectedProducts: (state, { payload }: PayloadAction<TargetProductPayload[]>) => {
 			const { relevantProducts, carts, selectedProductsRecord } = state;
-			const { cartId, productId } = payload;
-			let newSelectedProductsRecord = {};
+			let newSelectedProductsRecord: Record<number, SelectedProductsData> = {};
 
-			// if a product already exists in the record, increment his amount and set the originCartIdsList
-			if (selectedProductsRecord[productId]) {
-				newSelectedProductsRecord = {
-					...selectedProductsRecord,
-					[productId]: {
-						...selectedProductsRecord[productId],
-						amount: selectedProductsRecord[productId].amount + 1,
-						originCartIdsList: [...selectedProductsRecord[productId].originCartIdsList, cartId],
-					},
-				};
-			} else {
-				// otherwise, initialize and store the selected product data in the record
-				const productData = relevantProducts.find(({ id }) => id === productId)!;
-				const availableInCarts = carts
-					.filter(({ products }) => products.some(({ id }) => id === productId))
-					.map(({ id }) => id);
+			for (const targetObj of payload) {
+				const { cartId, productId } = targetObj;
+				// if a product already exists in the record, increment his amount and set the originCartIdsList
+				if (selectedProductsRecord[productId]) {
+					newSelectedProductsRecord = {
+						...newSelectedProductsRecord,
+						...selectedProductsRecord,
+						[productId]: {
+							...selectedProductsRecord[productId],
+							amount: selectedProductsRecord[productId].amount + 1,
+							originCartIdsList: [...selectedProductsRecord[productId].originCartIdsList, cartId],
+						},
+					};
+				} else {
+					const productData = relevantProducts.find(({ id }) => id === productId)!;
+					const availableInCarts = carts
+						.filter(({ products }) => products.some(({ id }) => id === productId))
+						.map(({ id }) => id);
 
-				newSelectedProductsRecord = {
-					...selectedProductsRecord,
-					[productId]: { productData, availableInCarts, originCartIdsList: [cartId], amount: 1 },
-				};
+					// also handle any duplicate products in the payload array
+					const duplicateProducts = payload.filter(({ productId: payLoadProdId }) => payLoadProdId === productId);
+					if (duplicateProducts.length > 1) {
+						const originCartIds = [...duplicateProducts.map(({ cartId }) => cartId)];
+						newSelectedProductsRecord = {
+							...newSelectedProductsRecord,
+							...selectedProductsRecord,
+							[productId]: {
+								productData,
+								availableInCarts,
+								originCartIdsList: originCartIds,
+								amount: duplicateProducts.length,
+							},
+						};
+					} else {
+						// otherwise, initialize and store the selected product data in the record
+						newSelectedProductsRecord = {
+							...newSelectedProductsRecord,
+							...selectedProductsRecord,
+							[productId]: { productData, availableInCarts, originCartIdsList: [cartId], amount: 1 },
+						};
+					}
+				}
 			}
 
 			return { ...state, selectedProductsRecord: newSelectedProductsRecord };

@@ -29,6 +29,13 @@ export const TotalDiscountSpan = styled.span`
 	font-size: 15px;
 `;
 
+export const ControlsContainer = styled.div<{ $numberOfFrs: number }>`
+	width: 50%;
+	display: grid;
+	grid-template-columns: ${props => '1fr '.repeat(props.$numberOfFrs)}; // 1fr for each button
+	grid-gap: 1rem;
+`;
+
 export const ShoppingIcon = styled(FontAwesomeIcon).attrs(({}) => ({
 	size: 'lg',
 }))`

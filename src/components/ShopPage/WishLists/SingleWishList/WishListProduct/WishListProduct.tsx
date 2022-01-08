@@ -2,7 +2,7 @@ import { useCallback, useMemo, memo } from 'react';
 import { useDispatch } from 'react-redux';
 import { Rating } from 'react-simple-star-rating';
 import { addToSelectedProducts, removeSelectedProducts } from '../../../../../redux/slices/shopSlice';
-import { Product } from '../../../../../redux/slices/types';
+import { Product, TargetProductPayload } from '../../../../../redux/slices/types';
 import { formatPrice } from '../../../../../utils';
 import { Button, ButtonTypes } from '../../../../ui/Button';
 import { FavoriteIndicatorBadge } from '../../../../ui/FavoriteIndicatorBadge';
@@ -33,11 +33,11 @@ function WishListProduct({ productData, isFavorite, cartId, isSelected }: WishLi
 	const formattedPrice = formatPrice(price);
 
 	const onButtonClick = useCallback(() => {
-		const payload = { productId, cartId };
+		const payload: TargetProductPayload = { productId, cartId };
 		if (isSelected) {
 			return dispatch(removeSelectedProducts(payload));
 		}
-		return dispatch(addToSelectedProducts(payload));
+		return dispatch(addToSelectedProducts([payload]));
 	}, [isSelected]);
 
 	const buttonLabel = useMemo(() => (!isSelected ? 'Add to cart' : 'Remove from cart'), [isSelected]);
