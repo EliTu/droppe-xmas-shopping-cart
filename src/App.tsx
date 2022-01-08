@@ -7,6 +7,7 @@ import { getCartsAsync } from './redux/slices/thunks';
 import { useSelector } from 'react-redux';
 import { Status } from './redux/slices/types';
 import { ShopPage } from './components/ShopPage';
+import { CheckoutPage } from './components/CheckoutPage';
 
 function App() {
 	const dispatch = useAppDispatch();
@@ -24,7 +25,7 @@ function App() {
 				{status === Status.IDLE && (
 					<Routes>
 						<Route path="/" element={<ShopPage />} />
-						<Route path="/checkout" element={<div>This is the checkout page</div>} />
+						<Route path="/checkout" element={<CheckoutPage />} />
 					</Routes>
 				)}
 			</MainLayout>

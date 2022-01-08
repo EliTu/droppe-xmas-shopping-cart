@@ -23,7 +23,7 @@ function Header() {
 			</TitleContainer>
 			<NavLinksContainer>
 				{navLinkList.map(({ label, to }) => (
-					<StyledLink to={to} key={label} isActive={pathname === to}>
+					<StyledLink to={to} key={label} $isActive={pathname === to}>
 						{label}
 					</StyledLink>
 				))}

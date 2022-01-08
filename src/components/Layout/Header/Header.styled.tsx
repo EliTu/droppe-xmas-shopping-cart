@@ -37,8 +37,8 @@ export const NavLinksContainer = styled(FlexRowDiv)`
 	margin-inline-start: 0.2rem;
 `;
 
-export const StyledLink = styled(Link)<{ isActive?: boolean }>`
-	width: auto;
+export const StyledLink = styled(Link)<{ $isActive?: boolean }>`
+	width: 8rem;
 	height: 100%;
 	color: #ffffffa2;
 	text-decoration: none;
@@ -48,13 +48,13 @@ export const StyledLink = styled(Link)<{ isActive?: boolean }>`
 	align-items: center;
 	justify-content: center;
 	transition: all 0.2s ease;
-	border-bottom: ${props => (props.isActive ? '8px solid #ffffffa2' : '')};
-	background-color: ${props => (props.isActive ? 'royalblue' : '')};
+	border-bottom: ${props => (props.$isActive ? '8px solid #ffffffa2' : '')};
+	background-color: ${props => (props.$isActive ? '#b5c9f5a2' : '')};
 
 	&:hover {
-		background-color: royalblue;
+		background-color: #b5c9f5a2;
 	}
 	&:active {
-		background-color: navy;
+		background-color: royalblue;
 	}
 `;

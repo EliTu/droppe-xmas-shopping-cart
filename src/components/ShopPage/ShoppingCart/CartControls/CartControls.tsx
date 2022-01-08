@@ -87,7 +87,7 @@ function CartControls() {
 	return (
 		<CartControlsContainer>
 			<ControlsContainer>
-				<ControlsLabel>Presets available:</ControlsLabel>
+				<ControlsLabel>Preset selection options:</ControlsLabel>
 				<PresetButtonsContainer $numberOfFrs={presetsControlButtons.length}>
 					{presetsControlButtons.map(({ name, label, presetData }) => (
 						<Button type={ButtonTypes.CONFIRM} key={name} onClick={() => onPresetButtonClick(presetData)}>
