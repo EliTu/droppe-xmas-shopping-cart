@@ -7,46 +7,9 @@ import { CartControls } from './CartControls';
 import { SelectedProduct } from './SelectedProduct';
 import { SelectedProductsContainer } from './ShoppingCart.styled';
 
-interface SelectedProductData {
-	productData: Product;
-	amount: number;
-	availableInCarts: number[];
-	originCartIds: number[];
-}
-
 function ShoppingCart() {
-	const { selectedProductsData, relevantProducts, carts } = useSelector(({ shop }: RootState) => shop);
-
-	const computedProductsList = useMemo(
-		() =>
-			selectedProductsData.reduce<Record<number, SelectedProductData>>((selectedProductsMap, currentSelectedData) => {
-				const productId: number = currentSelectedData.productId;
-				const originCartId: number = currentSelectedData.cartId;
-
-				// if a product already exists in the map, increment his amount
-				if (selectedProductsMap[currentSelectedData.productId]) {
-					return {
-						...selectedProductsMap,
-						[productId]: {
-							...selectedProductsMap[productId],
-							amount: selectedProductsMap[productId].amount + 1,
-							originCartIds: [...selectedProductsMap[productId].originCartIds, originCartId],
-						},
-					};
-				}
-				// otherwise, store the selected product data in the map
-				const productData = relevantProducts.find(({ id }) => id === productId)!;
-				const availableInCarts = carts
-					.filter(({ products }) => products.some(({ id }) => id === productId))
-					.map(({ id }) => id);
-
-				return {
-					...selectedProductsMap,
-					[productId]: { productData, availableInCarts, originCartIds: [originCartId], amount: 1 },
-				};
-			}, {}),
-		[selectedProductsData, relevantProducts, carts]
-	);
+	const { selectedProductsRecord } = useSelector(({ shop }: RootState) => shop);
+	console.log(selectedProductsRecord);
 
 	return (
 		<SectionContainer>
@@ -54,17 +17,19 @@ function ShoppingCart() {
 				<SectionHeader>Your shopping cart:</SectionHeader>
 			</SectionHeaderContainer>
 			<SelectedProductsContainer>
-				{Object.values(computedProductsList).map(({ productData, amount, availableInCarts, originCartIds }) => {
-					return (
-						<SelectedProduct
-							key={productData.id}
-							productData={productData}
-							availableInCarts={availableInCarts}
-							selectionAmount={amount}
-							originCartIds={originCartIds}
-						/>
-					);
-				})}
+				{Object.values(selectedProductsRecord).map(
+					({ amount, availableInCarts, originCartIdsList: originCartIds, productData }) => {
+						return (
+							<SelectedProduct
+								key={productData.id}
+								productData={productData}
+								availableInCarts={availableInCarts}
+								selectionAmount={amount}
+								originCartIds={originCartIds}
+							/>
+						);
+					}
+				)}
 			</SelectedProductsContainer>
 			<CartControls></CartControls>
 		</SectionContainer>

@@ -1,5 +1,12 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { CartWithPopulatedProducts, Product, SelectedProductsData, ShopInitialState, Status } from './types';
+import {
+	CartWithPopulatedProducts,
+	Product,
+	SelectedProductsData,
+	ShopInitialState,
+	Status,
+	TargetProductPayload,
+} from './types';
 import { getCartsAsync } from './thunks';
 import { WISH_LIST_USERS } from './constants';
 
@@ -9,7 +16,7 @@ const initialState: ShopInitialState = {
 	acceptedCarts: [],
 	disregardedCarts: [],
 	relevantProducts: [],
-	selectedProductsData: [],
+	selectedProductsRecord: {},
 	status: Status.IDLE,
 	errorMessage: undefined,
 };
@@ -22,20 +29,59 @@ export const shopSlice = createSlice({
 		setRelevantProducts: (state, { payload }: PayloadAction<Product[]>) => {
 			return { ...state, relevantProducts: payload };
 		},
-		addToSelectedProducts: (state, { payload }: PayloadAction<SelectedProductsData>) => {
-			const newProducts: SelectedProductsData[] = [...state.selectedProductsData, payload];
-			return { ...state, selectedProductsData: newProducts };
+		addToSelectedProducts: (state, { payload }: PayloadAction<TargetProductPayload>) => {
+			const { relevantProducts, carts, selectedProductsRecord } = state;
+			const { cartId, productId } = payload;
+			let newSelectedProductsRecord = {};
+
+			// if a product already exists in the record, increment his amount and set the originCartIdsList
+			if (selectedProductsRecord[productId]) {
+				newSelectedProductsRecord = {
+					...selectedProductsRecord,
+					[productId]: {
+						...selectedProductsRecord[productId],
+						amount: selectedProductsRecord[productId].amount + 1,
+						originCartIdsList: [...selectedProductsRecord[productId].originCartIdsList, cartId],
+					},
+				};
+			} else {
+				// otherwise, initialize and store the selected product data in the record
+				const productData = relevantProducts.find(({ id }) => id === productId)!;
+				const availableInCarts = carts
+					.filter(({ products }) => products.some(({ id }) => id === productId))
+					.map(({ id }) => id);
+
+				newSelectedProductsRecord = {
+					...selectedProductsRecord,
+					[productId]: { productData, availableInCarts, originCartIdsList: [cartId], amount: 1 },
+				};
+			}
+
+			return { ...state, selectedProductsRecord: newSelectedProductsRecord };
 		},
-		removeSelectedProducts: (state, { payload }: PayloadAction<SelectedProductsData>) => {
-			const newProducts: SelectedProductsData[] = state.selectedProductsData.filter(({ cartId, productId }) => {
-				// check for the relevant cart
-				if (cartId === payload.cartId) {
-					// then remove the relevant product, otherwise continue
-					return productId !== payload.productId;
-				}
-				return true;
-			});
-			return { ...state, selectedProductsData: newProducts };
+		removeSelectedProducts: (state, { payload }: PayloadAction<TargetProductPayload>) => {
+			const { cartId, productId } = payload;
+			const targetProduct = state.selectedProductsRecord[productId];
+
+			let newProductRecord: Record<number, SelectedProductsData> = {};
+
+			// if the target product is a single product (amount of 1), delete it from the record
+			if (targetProduct.amount === 1) {
+				newProductRecord = { ...state.selectedProductsRecord };
+				delete newProductRecord[productId];
+			} else {
+				// otherwise, reduce the amount and remove the cart id from the cart ids list to correctly remove it from the relevant wishlist
+				newProductRecord = {
+					...state.selectedProductsRecord,
+					[productId]: {
+						...targetProduct,
+						amount: targetProduct.amount - 1,
+						originCartIdsList: targetProduct.originCartIdsList.filter(id => id !== cartId),
+					},
+				};
+			}
+
+			return { ...state, selectedProductsRecord: newProductRecord };
 		},
 	},
 	// async actions

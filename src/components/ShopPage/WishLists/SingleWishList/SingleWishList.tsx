@@ -30,7 +30,7 @@ function SingleWishList({ WishListOwner, cartData, sortParameter, showFavoritesO
 	const { date, products, id: cartId } = cartData;
 	const { name, favoriteProductId } = WishListOwner;
 
-	const { selectedProductsData } = useSelector(({ shop }: RootState) => shop);
+	const { selectedProductsRecord } = useSelector(({ shop }: RootState) => shop);
 
 	const [isWishListOpen, setIsWishListOpen] = useState(true);
 
@@ -78,8 +78,9 @@ function SingleWishList({ WishListOwner, cartData, sortParameter, showFavoritesO
 			{isWishListOpen && (
 				<ProductsContainer>
 					{sortedProducts.map((product, i) => {
-						const isSelected = selectedProductsData.find(
-							({ cartId: selectedCartId, productId }) => selectedCartId === cartId && productId === product.id
+						const isSelected = Object.values(selectedProductsRecord).find(
+							({ productData, originCartIdsList }) =>
+								originCartIdsList.includes(cartId) && productData.id === product.id
 						);
 						return (
 							<WishListProduct
