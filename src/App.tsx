@@ -24,6 +24,7 @@ function App() {
 				{status === Status.IDLE && (
 					<Routes>
 						<Route path="/" element={<ShopPage />} />
+						<Route path="/checkout" element={<div>This is the checkout page</div>} />
 					</Routes>
 				)}
 			</MainLayout>

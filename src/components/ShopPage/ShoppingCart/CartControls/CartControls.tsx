@@ -1,4 +1,5 @@
 import { useCallback, useMemo } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { RootState, useAppDispatch } from '../../../../redux/store';
 import { calculateDiscount, formatPrice, getPresetsData, PresetName } from '../../../../utils';
@@ -28,6 +29,7 @@ interface ControlButton {
 function CartControls() {
 	const { selectedProductsRecord, carts, wishListUsers } = useSelector(({ shop }: RootState) => shop);
 	const dispatch = useAppDispatch();
+	const navigate = useNavigate();
 
 	const selectedProductsValues = Object.values(selectedProductsRecord);
 	const { totalPrice, discountAmount } = useMemo(
@@ -80,6 +82,8 @@ function CartControls() {
 		dispatch(addToSelectedProducts(presetData)); // pass the preset data
 	}, []);
 
+	const onCheckoutClick = () => navigate('/checkout', { replace: true });
+
 	return (
 		<CartControlsContainer>
 			<ControlsContainer>
@@ -97,7 +101,12 @@ function CartControls() {
 					<TotalPriceSpan>Total: {formatPrice(totalPrice)}</TotalPriceSpan>
 					<TotalDiscountSpan>You saved: {formatPrice(discountAmount)}</TotalDiscountSpan>
 				</PriceContainer>
-				<Button disabled={!selectedProductsValues.length} fontSize={16} type={ButtonTypes.CONFIRM}>
+				<Button
+					disabled={!selectedProductsValues.length}
+					fontSize={16}
+					type={ButtonTypes.CONFIRM}
+					onClick={onCheckoutClick}
+				>
 					Checkout {<ShoppingIcon icon={faShoppingBag} />}
 				</Button>
 			</CheckoutContainer>

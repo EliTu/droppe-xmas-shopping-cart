@@ -21,7 +21,7 @@ const TYPE_STYLE_MAP: Record<ButtonTypes, TypeStyle> = {
 		background: 'white',
 		color: 'initial',
 		hover: {
-			background: 'deepskyblue',
+			background: 'lightgrey',
 		},
 		active: {
 			background: 'white',
