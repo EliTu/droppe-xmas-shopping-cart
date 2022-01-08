@@ -51,7 +51,7 @@ export interface TargetProductPayload {
 }
 
 export interface CheckoutProductData {
-	id: number;
+	productData: Product;
 	amount: number;
 }
 

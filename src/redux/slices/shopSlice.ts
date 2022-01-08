@@ -114,14 +114,15 @@ export const shopSlice = createSlice({
 				let acceptedProducts: CheckoutProductData[] = [];
 				let disregardedProducts: CheckoutProductData[] = [];
 
+				// go over all of the cart products to create a new object
 				for (const product of cartProducts) {
-					if (selectedProductsRecord[product.id]) {
-						acceptedProducts = [
-							...acceptedProducts,
-							{ id: product.id, amount: selectedProductsRecord[product.id].amount },
-						];
+					// check if the product is available in the selected products record, if true then add to the accepted products
+					const recordProduct = selectedProductsRecord[product.id];
+					if (recordProduct && recordProduct.originCartIdsList.includes(cart.id)) {
+						acceptedProducts = [...acceptedProducts, { productData: product, amount: 1 }];
 					} else {
-						disregardedProducts = [...disregardedProducts, { id: product.id, amount: 0 }];
+						// otherwise, add it to the disregarded products list
+						disregardedProducts = [...disregardedProducts, { productData: product, amount: 0 }];
 					}
 				}
 
