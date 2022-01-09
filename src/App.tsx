@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import MainLayout from './components/layout/MainLayout';
+import { MainLayout } from './components/layout';
 import GlobalStyles from './GlobalStyles.styled';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { RootState, useAppDispatch } from './redux/store';
