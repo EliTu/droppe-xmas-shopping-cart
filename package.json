@@ -1,10 +1,13 @@
 {
   "name": "droppe-xmas",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
     "preview": "vite preview"
+  },
+  "engines": {
+    "node": "14.x"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^1.2.36",
