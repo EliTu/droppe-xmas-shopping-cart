@@ -10,8 +10,8 @@ export const MainAppLayout = styled.div`
 `;
 
 export const ContentContainer = styled.main`
-	/* calc 100vh (total page height) - footer height - header height */
-	height: calc(100vh - 4rem - 4rem);
+	/* calc 100vh (total page height) - header height */
+	height: calc(100vh - 4rem);
 	margin: 0 1.5rem;
 	overflow: hidden;
 `;

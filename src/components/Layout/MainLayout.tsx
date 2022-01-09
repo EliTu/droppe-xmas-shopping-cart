@@ -16,7 +16,7 @@ function MainLayout({ children }: MainLayoutProps) {
 		<MainAppLayout>
 			<Header />
 			<ContentContainer>{status === Status.LOADING ? <FullPageLoader /> : children}</ContentContainer>
-			<Footer />
+			{/* <Footer /> */}
 		</MainAppLayout>
 	);
 }
