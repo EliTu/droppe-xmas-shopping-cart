@@ -1,6 +1,7 @@
 import { useMemo } from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import { useFullPriceDetails } from '../../hooks';
 import { updateCartsAsync } from '../../redux/slices/thunks';
 import { RootState, useAppDispatch } from '../../redux/store';
 import { calculateDiscount, formatPrice } from '../../utils';
@@ -27,12 +28,12 @@ interface SummaryDetailItem {
 	value: string | number;
 }
 
-type PriceCalculationRecord = Record<'totalPrice' | 'discountAmount', number>;
-
 function CheckoutPage() {
 	const { checkoutCarts, wishListUsers, selectedProductsRecord } = useSelector(({ shop }: RootState) => shop);
 	const navigate = useNavigate();
 	const dispatch = useAppDispatch();
+
+	const { discountAmount, totalPrice } = useFullPriceDetails();
 
 	const summaryDetails: SummaryDetailItem[] = useMemo(
 		() => [
@@ -49,36 +50,13 @@ function CheckoutPage() {
 		[wishListUsers, checkoutCarts]
 	);
 
-	const selectedProductsValues = Object.values(selectedProductsRecord);
-	const { totalPrice, discountAmount } = useMemo(
-		() =>
-			selectedProductsValues.reduce<PriceCalculationRecord>(
-				(acc, currentProduct) => {
-					if (currentProduct.amount <= 1) {
-						return { ...acc, totalPrice: acc.totalPrice + currentProduct.productData.price };
-					}
-
-					const priceBeforeDiscount = currentProduct.productData.price * currentProduct.amount;
-					const discountPercentage = currentProduct.amount * 10;
-					const { amountAfterDiscount, amountReduced } = calculateDiscount(priceBeforeDiscount, discountPercentage);
-
-					return {
-						totalPrice: amountAfterDiscount,
-						discountAmount: acc.discountAmount + amountReduced,
-					};
-				},
-				{ totalPrice: 0, discountAmount: 0 }
-			),
-		[selectedProductsRecord]
-	);
-
 	const onCancelClick = () => navigate('/');
 	const onConfirmClick = () => {
 		navigate('/');
 		dispatch(updateCartsAsync());
 	};
 
-	if (!checkoutCarts.length || !selectedProductsValues.length) {
+	if (!checkoutCarts.length || !Object.values(selectedProductsRecord).length) {
 		return (
 			<EmptyPageContainer>
 				<h1>Nothing to checkout currently!</h1>

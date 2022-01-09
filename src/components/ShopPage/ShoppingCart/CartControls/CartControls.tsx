@@ -2,7 +2,7 @@ import { useCallback, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { RootState, useAppDispatch } from '../../../../redux/store';
-import { calculateDiscount, formatPrice, getPresetsData, PresetName } from '../../../../utils';
+import { formatPrice, getPresetsData, PresetName } from '../../../../utils';
 import { Button, ButtonTypes } from '../../../ui/Button';
 import {
 	CartControlsContainer,
@@ -22,8 +22,8 @@ import {
 	aggregateCheckoutCarts,
 	clearAllSelectedProducts,
 } from '../../../../redux/slices/shopSlice';
+import { useFullPriceDetails } from '../../../../hooks';
 
-type PriceCalculationRecord = Record<'totalPrice' | 'discountAmount', number>;
 interface ControlButton {
 	name: PresetName;
 	label: string;
@@ -35,28 +35,7 @@ function CartControls() {
 	const dispatch = useAppDispatch();
 	const navigate = useNavigate();
 
-	const selectedProductsValues = Object.values(selectedProductsRecord);
-	const { totalPrice, discountAmount } = useMemo(
-		() =>
-			selectedProductsValues.reduce<PriceCalculationRecord>(
-				(acc, currentProduct) => {
-					if (currentProduct.amount <= 1) {
-						return { ...acc, totalPrice: acc.totalPrice + currentProduct.productData.price };
-					}
-
-					const priceBeforeDiscount = currentProduct.productData.price * currentProduct.amount;
-					const discountPercentage = currentProduct.amount * 10;
-					const { amountAfterDiscount, amountReduced } = calculateDiscount(priceBeforeDiscount, discountPercentage);
-
-					return {
-						totalPrice: amountAfterDiscount,
-						discountAmount: acc.discountAmount + amountReduced,
-					};
-				},
-				{ totalPrice: 0, discountAmount: 0 }
-			),
-		[selectedProductsRecord]
-	);
+	const { discountAmount, totalPrice } = useFullPriceDetails();
 
 	const predefinedGetPresetDataFn = (presetName: PresetName) => getPresetsData(presetName, carts, wishListUsers);
 
@@ -109,7 +88,7 @@ function CartControls() {
 					<TotalDiscountSpan>You saved: {formatPrice(discountAmount)}</TotalDiscountSpan>
 				</PriceContainer>
 				<Button
-					disabled={!selectedProductsValues.length}
+					disabled={!Object.values(selectedProductsRecord).length}
 					fontSize={16}
 					type={ButtonTypes.CONFIRM}
 					onClick={onCheckoutClick}
