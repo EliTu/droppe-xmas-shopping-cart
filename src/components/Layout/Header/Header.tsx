@@ -1,5 +1,5 @@
 import { useLocation } from 'react-router-dom';
-import { HeaderContainer, MainTitle, NavLinksContainer, StyledLink, TitleContainer } from './Header.styled';
+import { GiftIcon, HeaderContainer, MainTitle, NavLinksContainer, StyledLink, TitleContainer } from './Header.styled';
 
 function Header() {
 	const title = 'Droppe XMAS';
@@ -19,6 +19,7 @@ function Header() {
 	return (
 		<HeaderContainer>
 			<TitleContainer>
+				<GiftIcon />
 				<MainTitle>{title}</MainTitle>
 			</TitleContainer>
 			<NavLinksContainer>

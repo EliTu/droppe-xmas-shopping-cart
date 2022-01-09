@@ -1,6 +1,8 @@
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { FlexRowDiv } from '../../../GlobalStyles.styled';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faGifts } from '@fortawesome/free-solid-svg-icons';
 
 export const HeaderContainer = styled.header`
 	height: 4rem;
@@ -26,6 +28,14 @@ export const TitleContainer = styled(FlexRowDiv)`
 
 export const MainTitle = styled.h1`
 	font-size: 24px;
+	color: #ffffffa2;
+`;
+
+export const GiftIcon = styled(FontAwesomeIcon).attrs(({}) => ({
+	icon: faGifts,
+	size: '3x',
+}))`
+	margin: 0 0.3em;
 	color: #ffffffa2;
 `;
 
