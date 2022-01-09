@@ -64,3 +64,15 @@ export const CheckoutButtonsContainer = styled(FlexRowDiv)`
 	height: 3rem;
 	margin-top: 1rem;
 `;
+
+export const EmptyPageContainer = styled(FlexColumnDiv)`
+	justify-content: center;
+	align-items: center;
+	width: 100%;
+	height: 100%;
+`;
+
+export const GoBackClicker = styled.a`
+	cursor: pointer;
+	color: dodgerblue;
+`;

@@ -13,6 +13,8 @@ import {
 	CheckoutSummaryPriceDataContainer,
 	CheckoutSummaryTitle,
 	CheckoutWishListsContainer,
+	EmptyPageContainer,
+	GoBackClicker,
 	PriceLabel,
 	SummaryItemLabel,
 	SummaryItemRow,
@@ -75,6 +77,18 @@ function CheckoutPage() {
 		navigate('/');
 		dispatch(updateCartsAsync());
 	};
+
+	if (!checkoutCarts.length || !selectedProductsValues.length) {
+		return (
+			<EmptyPageContainer>
+				<h1>Nothing to checkout currently!</h1>
+				<span>
+					<GoBackClicker onClick={onCancelClick}>Go back</GoBackClicker> to the shop, select some items and click on
+					checkout in order to proceed
+				</span>
+			</EmptyPageContainer>
+		);
+	}
 
 	return (
 		<CheckoutPageContainer>
