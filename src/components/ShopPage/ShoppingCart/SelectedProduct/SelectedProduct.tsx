@@ -1,10 +1,10 @@
 import { useMemo } from 'react';
 import { useSelector } from 'react-redux';
-import { Rating } from 'react-simple-star-rating';
 import { Product } from '../../../../redux/slices/types';
 import { RootState } from '../../../../redux/store';
 import { calculateDiscount, formatPrice } from '../../../../utils';
 import { FavoriteIndicatorBadge } from '../../../ui/FavoriteIndicatorBadge';
+import { StarRating } from '../../../ui/StarRating';
 import {
 	PriceCalculationSpan,
 	PriceSpan,
@@ -14,8 +14,6 @@ import {
 	ProductInfoContainer,
 	ProductTitle,
 	PurchasedForUserIndicator,
-	RateCount,
-	RatingContainer,
 	RequestedByContainer,
 	SelectedProductSummary,
 	SummaryLabel,
@@ -79,11 +77,7 @@ function SelectedProduct({ productData, selectionAmount, availableInCarts, origi
 					{title}
 					{isFavoriteInAnyList && <FavoriteIndicatorBadge amount={favoriteInList.length} />}
 				</ProductTitle>
-				<RatingContainer>
-					<Rating ratingValue={0} initialValue={rating.rate} size={16} readonly />
-					<RateCount>{rating.rate} out of 5</RateCount>
-					<RateCount> - Rated by {rating.count} reviewers</RateCount>
-				</RatingContainer>
+				<StarRating rateData={rating} />
 				<SelectedProductSummary>
 					<PriceSpan $isFavorite={isFavoriteInAnyList}>
 						{formattedPrice}

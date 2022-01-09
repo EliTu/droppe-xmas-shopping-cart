@@ -15,6 +15,7 @@ export const SectionHeaderContainer = styled(FlexRowDiv)`
 	height: 3rem;
 	align-items: center;
 	justify-content: space-between;
+	margin-top: 1rem;
 `;
 
 export const SectionHeader = styled.h3`

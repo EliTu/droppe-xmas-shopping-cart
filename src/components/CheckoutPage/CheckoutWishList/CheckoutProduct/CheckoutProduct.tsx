@@ -1,4 +1,3 @@
-import { Rating } from 'react-simple-star-rating';
 import { Product } from '../../../../redux/slices/types';
 import {
 	PriceSpan,
@@ -7,12 +6,11 @@ import {
 	ProductImageContainer,
 	ProductInfoContainer,
 	ProductTitle,
-	RateCount,
-	RatingContainer,
 	SelectedProductSummary,
 } from '../../../ShopPage/ShoppingCart/SelectedProduct/SelectedProduct.styled';
 import { FavoriteIndicatorBadge } from '../../../ui/FavoriteIndicatorBadge';
 import { formatPrice } from '../../../../utils';
+import { StarRating } from '../../../ui/StarRating';
 
 interface CheckoutProductData {
 	productData: Product;
@@ -32,11 +30,7 @@ function CheckoutProduct({ productData, isFavorite }: CheckoutProductData) {
 					{title}
 					{isFavorite && <FavoriteIndicatorBadge />}
 				</ProductTitle>
-				<RatingContainer>
-					<Rating ratingValue={0} initialValue={rating.rate} size={16} readonly />
-					<RateCount>{rating.rate} out of 5</RateCount>
-					<RateCount> - Rated by {rating.count} reviewers</RateCount>
-				</RatingContainer>
+				<StarRating rateData={rating} />
 				<SelectedProductSummary>
 					<PriceSpan $isFavorite={isFavorite}>{formatPrice(originalPrice)}</PriceSpan>
 				</SelectedProductSummary>

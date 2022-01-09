@@ -1,5 +1,4 @@
 import { useCallback, useMemo, memo } from 'react';
-import { Rating } from 'react-simple-star-rating';
 import { addToSelectedProducts, removeSelectedProducts } from '../../../../../redux/slices/shopSlice';
 import { Product, TargetProductPayload } from '../../../../../redux/slices/types';
 import { useAppDispatch } from '../../../../../redux/store';
@@ -7,6 +6,7 @@ import { formatPrice } from '../../../../../utils';
 import { Button, ButtonTypes } from '../../../../ui/Button';
 import { FavoriteIndicatorBadge } from '../../../../ui/FavoriteIndicatorBadge';
 import { InfoLabel } from '../../../../ui/InfoLabel';
+import { StarRating } from '../../../../ui/StarRating';
 import {
 	PriceSpan,
 	ProductContainer,
@@ -14,8 +14,6 @@ import {
 	ProductImageContainer,
 	ProductInfoContainer,
 	ProductTitle,
-	RateCount,
-	RatingContainer,
 	RightSideContainer,
 } from './WishListProduct.styled';
 
@@ -52,11 +50,7 @@ function WishListProduct({ productData, isFavorite, cartId, isSelected }: WishLi
 					{title}
 					{isFavorite && <FavoriteIndicatorBadge />}
 				</ProductTitle>
-				<RatingContainer>
-					<Rating ratingValue={0} initialValue={rating.rate} size={16} readonly />
-					<RateCount>{rating.rate} out of 5</RateCount>
-					<RateCount> - Rated by {rating.count} reviewers</RateCount>
-				</RatingContainer>
+				<StarRating rateData={rating} />
 				<InfoLabel label="Category" value={category} />
 				<InfoLabel label="Description" value={description} />
 			</ProductInfoContainer>

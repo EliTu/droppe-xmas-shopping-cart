@@ -2,7 +2,6 @@ import { ReactNode } from 'react';
 import { useSelector } from 'react-redux';
 import { Status } from '../../redux/slices/types';
 import { RootState } from '../../redux/store';
-import { Footer } from './Footer';
 import { Header } from './Header';
 import { ContentContainer, FullPageLoader, MainAppLayout } from './Layout.styled';
 
@@ -16,7 +15,6 @@ function MainLayout({ children }: MainLayoutProps) {
 		<MainAppLayout>
 			<Header />
 			<ContentContainer>{status === Status.LOADING ? <FullPageLoader /> : children}</ContentContainer>
-			{/* <Footer /> */}
 		</MainAppLayout>
 	);
 }

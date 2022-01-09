@@ -32,16 +32,6 @@ export const ProductTitle = styled.span<{ $isFavorite: boolean }>`
 	color: ${props => props.$isFavorite && 'goldenrod'};
 `;
 
-export const RatingContainer = styled(FlexRowDiv)`
-	align-items: baseline;
-	font-size: 11px;
-	margin: 0.2rem 0.2rem 0.2rem 0;
-`;
-
-export const RateCount = styled.span`
-	margin-inline-start: 0.2rem;
-`;
-
 export const ProductInfoLabel = styled.span`
 	font-size: 12px;
 	font-weight: bold;

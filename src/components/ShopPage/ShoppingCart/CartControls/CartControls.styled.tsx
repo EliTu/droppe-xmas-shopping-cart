@@ -4,7 +4,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 export const CartControlsContainer = styled(FlexRowDiv)`
 	width: 100%;
-	height: 11vh;
 	border: 1px solid #8a8a8abc;
 	padding: 0.5rem;
 	justify-content: space-between;
