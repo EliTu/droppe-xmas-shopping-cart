@@ -45,7 +45,7 @@ export const SummaryItemLabel = styled.span`
 
 export const CheckoutSummaryPriceDataContainer = styled(FlexColumnDiv)`
 	width: 50%;
-	margin: 1rem 0;
+	margin: 2rem 0;
 `;
 
 export const PriceLabel = styled.span`

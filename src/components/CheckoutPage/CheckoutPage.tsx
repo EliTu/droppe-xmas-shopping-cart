@@ -1,6 +1,8 @@
 import { useMemo } from 'react';
 import { useSelector } from 'react-redux';
-import { RootState } from '../../redux/store';
+import { useNavigate } from 'react-router-dom';
+import { updateCartsAsync } from '../../redux/slices/thunks';
+import { RootState, useAppDispatch } from '../../redux/store';
 import { calculateDiscount, formatPrice } from '../../utils';
 import { Button, ButtonTypes } from '../ui/Button';
 import {
@@ -27,6 +29,9 @@ type PriceCalculationRecord = Record<'totalPrice' | 'discountAmount', number>;
 
 function CheckoutPage() {
 	const { checkoutCarts, wishListUsers, selectedProductsRecord } = useSelector(({ shop }: RootState) => shop);
+	const navigate = useNavigate();
+	const dispatch = useAppDispatch();
+
 	const summaryDetails: SummaryDetailItem[] = useMemo(
 		() => [
 			{ label: 'Number of wish lists', value: wishListUsers.length },
@@ -65,6 +70,12 @@ function CheckoutPage() {
 		[selectedProductsRecord]
 	);
 
+	const onCancelClick = () => navigate('/');
+	const onConfirmClick = () => {
+		navigate('/');
+		dispatch(updateCartsAsync());
+	};
+
 	return (
 		<CheckoutPageContainer>
 			<CheckoutWishListsContainer>
@@ -88,8 +99,10 @@ function CheckoutPage() {
 					<TotalPriceLabel>Total: {formatPrice(totalPrice)}</TotalPriceLabel>
 				</CheckoutSummaryPriceDataContainer>
 				<CheckoutButtonsContainer>
-					<Button fontSize={18}>Cancel</Button>
-					<Button fontSize={25} type={ButtonTypes.CONFIRM}>
+					<Button onClick={onCancelClick} fontSize={18}>
+						Go back to shop
+					</Button>
+					<Button onClick={onConfirmClick} fontSize={25} type={ButtonTypes.CONFIRM}>
 						Confirm
 					</Button>
 				</CheckoutButtonsContainer>

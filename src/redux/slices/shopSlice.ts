@@ -9,7 +9,7 @@ import {
 	Status,
 	TargetProductPayload,
 } from './types';
-import { getCartsAsync } from './thunks';
+import { getCartsAsync, updateCartsAsync } from './thunks';
 import { WISH_LIST_USERS } from './constants';
 
 const initialState: ShopInitialState = {
@@ -128,6 +128,7 @@ export const shopSlice = createSlice({
 
 				return {
 					id: cart.id,
+					userId: cart.userId,
 					date: new Date(),
 					acceptedProducts,
 					disregardedProducts,
@@ -146,10 +147,24 @@ export const shopSlice = createSlice({
 			return {
 				...state,
 				status: Status.IDLE,
+				errorMessage: undefined,
 				carts: payload ?? [],
 			};
 		});
 		addCase(getCartsAsync.rejected, (state, { payload }) => {
+			return {
+				...state,
+				status: Status.ERROR,
+				errorMessage: (payload as Error)?.message,
+			};
+		});
+		addCase(updateCartsAsync.pending, state => {
+			return { ...state, status: Status.LOADING };
+		});
+		addCase(updateCartsAsync.fulfilled, state => {
+			return { ...state, status: Status.IDLE, errorMessage: undefined, checkoutCarts: [], selectedProductsRecord: {} };
+		});
+		addCase(updateCartsAsync.rejected, (state, { payload }) => {
 			return {
 				...state,
 				status: Status.ERROR,

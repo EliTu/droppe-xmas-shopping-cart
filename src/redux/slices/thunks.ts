@@ -1,5 +1,6 @@
+import { RootState } from './../store';
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { getApiDataByIdList } from './helpers';
+import { getApiDataByIdList, updateCartByCartList } from './helpers';
 import { setRelevantProducts } from './shopSlice';
 import { Cart, CartWithPopulatedProducts, Product } from './types';
 
@@ -44,3 +45,17 @@ export const getCartsAsync = createAsyncThunk(
 		}
 	}
 );
+
+export const updateCartsAsync = createAsyncThunk('updateCartsOnPurchase', async (_, { getState, rejectWithValue }) => {
+	const { shop } = getState() as RootState; // access the current store state
+	const { checkoutCarts } = shop;
+
+	try {
+		// pass the checkout carts to be updated
+		await updateCartByCartList(checkoutCarts);
+	} catch (error) {
+		if (error instanceof Error) {
+			return rejectWithValue(error.message);
+		}
+	}
+});

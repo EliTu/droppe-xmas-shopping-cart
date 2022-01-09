@@ -57,6 +57,7 @@ export interface CheckoutProductData {
 
 export interface CheckoutCarts {
 	id: number;
+	userId: number;
 	date: Date;
 	acceptedProducts: CheckoutProductData[];
 	disregardedProducts: CheckoutProductData[];
