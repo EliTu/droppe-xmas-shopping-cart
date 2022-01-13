@@ -1,8 +1,15 @@
 import { RootState } from './../store';
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { getApiDataByIdList, updateCartByCartList } from './helpers';
+import { getApiDataByIdList, updateApiByIdList } from './helpers';
 import { setRelevantProducts } from './shopSlice';
-import { Cart, CartWithPopulatedProducts, Product } from './types';
+import {
+	Cart,
+	CartWithPopulatedProducts,
+	Product,
+	ProductsToUpdateData,
+	UpdateCartApiData,
+	UpdateCartPayloadData,
+} from './types';
 
 export const getCartsAsync = createAsyncThunk(
 	'getAllCartsByUserCartId',
@@ -51,8 +58,32 @@ export const updateCartsAsync = createAsyncThunk('updateCartsOnPurchase', async 
 	const { checkoutCarts } = shop;
 
 	try {
-		// pass the checkout carts to be updated
-		await updateCartByCartList(checkoutCarts);
+		// first generate the relevant data required for the update operation based on the update carts API requirements
+		const cartsToUpdateData: UpdateCartApiData[] = checkoutCarts.map(
+			({ acceptedProducts, date, disregardedProducts, userId, id }) => {
+				// The API expects an {id, amount} array of objects as the body payload
+				const updatedProducts: ProductsToUpdateData[] = [...acceptedProducts, ...disregardedProducts].map(
+					({ productData, amount }) => ({
+						id: productData.id,
+						amount,
+					})
+				);
+
+				const payloadData: UpdateCartPayloadData = {
+					userId,
+					date,
+					products: updatedProducts,
+				};
+
+				return {
+					id,
+					payload: payloadData,
+				};
+			}
+		);
+
+		// pass the checkout carts data to be updated
+		await updateApiByIdList<unknown>(cartsToUpdateData, 'carts'); // we pass <unknown> generic as the res is not important for us at this point
 	} catch (error) {
 		if (error instanceof Error) {
 			return rejectWithValue(error.message);

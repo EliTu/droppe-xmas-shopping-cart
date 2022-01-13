@@ -63,6 +63,21 @@ export interface CheckoutCarts {
 	disregardedProducts: CheckoutProductData[];
 }
 
+export interface ProductsToUpdateData {
+	id: number;
+	amount: number;
+}
+export interface UpdateCartPayloadData {
+	userId: number;
+	date: Date;
+	products: ProductsToUpdateData[];
+}
+
+export interface UpdateCartApiData {
+	id: number;
+	payload: UpdateCartPayloadData;
+}
+
 export interface ShopInitialState {
 	carts: CartWithPopulatedProducts[];
 	wishListUsers: ReadonlyArray<WishListUser>; // in the case of this demo app, use an immutable static list of users, otherwise it shouldn't be ReadonlyArray
