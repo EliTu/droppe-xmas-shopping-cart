@@ -1,7 +1,6 @@
 import { useMemo } from 'react';
-import { useSelector } from 'react-redux';
+import { useShopStore } from '../../../../hooks';
 import { Product } from '../../../../redux/slices/types';
-import { RootState } from '../../../../redux/store';
 import { calculateDiscount, formatPrice } from '../../../../utils';
 import { FavoriteIndicatorBadge } from '../../../ui/FavoriteIndicatorBadge';
 import { StarRating } from '../../../ui/StarRating';
@@ -29,7 +28,7 @@ interface SelectedProduct {
 
 function SelectedProduct({ productData, selectionAmount, availableInCarts, originCartIds }: SelectedProduct) {
 	const { title, image, price: originalPrice, rating } = productData;
-	const { wishListUsers } = useSelector(({ shop }: RootState) => shop);
+	const { wishListUsers } = useShopStore();
 
 	const isEligibleForDiscount = useMemo(() => selectionAmount > 1, [selectionAmount]);
 

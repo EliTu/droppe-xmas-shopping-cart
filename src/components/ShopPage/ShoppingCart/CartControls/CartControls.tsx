@@ -1,7 +1,6 @@
 import { useCallback, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useSelector } from 'react-redux';
-import { RootState, useAppDispatch } from '../../../../redux/store';
+import { useAppDispatch } from '../../../../redux/store';
 import { formatPrice, getPresetsData, PresetName } from '../../../../utils';
 import { Button, ButtonTypes } from '../../../ui/Button';
 import {
@@ -22,7 +21,7 @@ import {
 	aggregateCheckoutCarts,
 	clearAllSelectedProducts,
 } from '../../../../redux/slices/shopSlice';
-import { useFullPriceDetails } from '../../../../hooks';
+import { useFullPriceDetails, useShopStore } from '../../../../hooks';
 
 interface ControlButton {
 	name: PresetName;
@@ -31,7 +30,7 @@ interface ControlButton {
 }
 
 function CartControls() {
-	const { selectedProductsRecord, carts, wishListUsers } = useSelector(({ shop }: RootState) => shop);
+	const { selectedProductsRecord, carts, wishListUsers } = useShopStore();
 	const dispatch = useAppDispatch();
 	const navigate = useNavigate();
 

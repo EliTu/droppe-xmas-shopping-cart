@@ -1,3 +1,4 @@
 import useFullPriceDetails from './useFullPriceDetails';
+import useShopStore from './useShopStore';
 
-export { useFullPriceDetails };
+export { useFullPriceDetails, useShopStore };

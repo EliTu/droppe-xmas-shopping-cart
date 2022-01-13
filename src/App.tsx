@@ -2,16 +2,16 @@ import { useEffect } from 'react';
 import { MainLayout } from './components/layout';
 import GlobalStyles from './GlobalStyles.styled';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import { RootState, useAppDispatch } from './redux/store';
+import { useAppDispatch } from './redux/store';
 import { getCartsAsync } from './redux/slices/thunks';
-import { useSelector } from 'react-redux';
 import { Status } from './redux/slices/types';
 import { ShopPage } from './components/ShopPage';
 import { CheckoutPage } from './components/CheckoutPage';
+import { useShopStore } from './hooks';
 
 function App() {
 	const dispatch = useAppDispatch();
-	const { wishListUsers, status } = useSelector(({ shop }: RootState) => shop);
+	const { wishListUsers, status } = useShopStore();
 
 	useEffect(() => {
 		const userCartIds = wishListUsers.map(user => user.associatedCartId);

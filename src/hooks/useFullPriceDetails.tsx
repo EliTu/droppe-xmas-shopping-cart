@@ -1,12 +1,11 @@
 import { useMemo } from 'react';
-import { useSelector } from 'react-redux';
-import { RootState } from '../redux/store';
 import { calculateDiscount } from '../utils';
+import useShopStore from './useShopStore';
 
 type PriceCalculationRecord = Record<'totalPrice' | 'discountAmount', number>;
 
 function useFullPriceDetails() {
-	const { selectedProductsRecord } = useSelector(({ shop }: RootState) => shop);
+	const { selectedProductsRecord } = useShopStore();
 	const selectedProductsValues = Object.values(selectedProductsRecord);
 
 	const { totalPrice, discountAmount } = selectedProductsValues.reduce<PriceCalculationRecord>(

@@ -16,8 +16,7 @@ import {
 } from './SingleWishList.styled';
 import { SortFields } from '../WishLists';
 import { BareButton } from '../../../ui/BareButton';
-import { useSelector } from 'react-redux';
-import { RootState } from '../../../../redux/store';
+import { useShopStore } from '../../../../hooks';
 
 interface WishListProps {
 	cartData: CartWithPopulatedProducts;
@@ -30,7 +29,7 @@ function SingleWishList({ WishListOwner, cartData, sortParameter, showFavoritesO
 	const { date, products, id: cartId } = cartData;
 	const { name, favoriteProductId } = WishListOwner;
 
-	const { selectedProductsRecord } = useSelector(({ shop }: RootState) => shop);
+	const { selectedProductsRecord } = useShopStore();
 
 	const [isWishListOpen, setIsWishListOpen] = useState(true);
 

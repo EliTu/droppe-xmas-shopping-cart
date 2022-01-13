@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
-import { useSelector } from 'react-redux';
+import { useShopStore } from '../../../hooks';
 import { clearAllSelectedProducts } from '../../../redux/slices/shopSlice';
-import { RootState, useAppDispatch } from '../../../redux/store';
+import { useAppDispatch } from '../../../redux/store';
 import { BareButton } from '../../ui/BareButton';
 import { SectionContainer, SectionHeaderContainer, SectionHeader } from '../ShopPage.styled';
 import { CartControls } from './CartControls';
@@ -9,7 +9,7 @@ import { SelectedProduct } from './SelectedProduct';
 import { NoProductsAvailable, SelectedProductsContainer } from './ShoppingCart.styled';
 
 function ShoppingCart() {
-	const { selectedProductsRecord } = useSelector(({ shop }: RootState) => shop);
+	const { selectedProductsRecord } = useShopStore();
 	const dispatch = useAppDispatch();
 
 	const areProductsAvailable = useMemo(

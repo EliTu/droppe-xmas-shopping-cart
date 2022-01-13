@@ -1,10 +1,9 @@
 import { useMemo } from 'react';
-import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { useFullPriceDetails } from '../../hooks';
+import { useFullPriceDetails, useShopStore } from '../../hooks';
 import { updateCartsAsync } from '../../redux/slices/thunks';
-import { RootState, useAppDispatch } from '../../redux/store';
-import { calculateDiscount, formatPrice } from '../../utils';
+import { useAppDispatch } from '../../redux/store';
+import { formatPrice } from '../../utils';
 import { Button, ButtonTypes } from '../ui/Button';
 import {
 	CheckoutButtonsContainer,
@@ -29,7 +28,7 @@ interface SummaryDetailItem {
 }
 
 function CheckoutPage() {
-	const { checkoutCarts, wishListUsers, selectedProductsRecord } = useSelector(({ shop }: RootState) => shop);
+	const { checkoutCarts, wishListUsers, selectedProductsRecord } = useShopStore();
 	const navigate = useNavigate();
 	const dispatch = useAppDispatch();
 

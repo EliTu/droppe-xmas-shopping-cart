@@ -1,7 +1,6 @@
 import { ReactNode } from 'react';
-import { useSelector } from 'react-redux';
+import { useShopStore } from '../../hooks';
 import { Status } from '../../redux/slices/types';
-import { RootState } from '../../redux/store';
 import { Header } from './Header';
 import { ContentContainer, FullPageLoader, MainAppLayout } from './Layout.styled';
 
@@ -10,7 +9,7 @@ interface MainLayoutProps {
 }
 
 function MainLayout({ children }: MainLayoutProps) {
-	const { status } = useSelector(({ shop }: RootState) => shop);
+	const { status } = useShopStore();
 	return (
 		<MainAppLayout>
 			<Header />

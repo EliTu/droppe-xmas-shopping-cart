@@ -1,11 +1,10 @@
 import { useMemo, useState, useCallback } from 'react';
-import { useSelector } from 'react-redux';
-import { RootState } from '../../../redux/store';
 import { CheckboxGroup, CheckboxItem } from '../../ui/CheckboxGroup/';
 import { Option, Select } from '../../ui/Select';
 import { SingleWishList } from './SingleWishList';
 import { SectionContainer, SectionHeaderContainer, SectionHeader } from '../ShopPage.styled';
 import { WishListHeaderControlsContainer, WishListsContainer } from './WishLists.styled';
+import { useShopStore } from '../../../hooks';
 
 export enum SortFields {
 	TITLE_DESC = 'title_desc',
@@ -37,7 +36,7 @@ function WishLists() {
 	const [sortParameter, setSortParameter] = useState(SortFields.TITLE_DESC);
 	const [showFavoritesOnly, setShowFavoritesOnly] = useState(false);
 
-	const { wishListUsers, carts } = useSelector(({ shop }: RootState) => shop);
+	const { wishListUsers, carts } = useShopStore();
 	const numberOfCarts = carts.length;
 
 	const computedTitle = useMemo(() => {
